@@ -23,7 +23,7 @@ class AuthService {
       final String token = "signinlakdfsjgnlasdf09kjsd-3,kajsdhf94nsdpffuqeb";
 
       // Mock loading with 2 seconds
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 1));
 
       // Check account email and password
       // is it stored in accounts[] ?
@@ -53,7 +53,7 @@ class AuthService {
   }) async {
     try {
       // Mock loading with 2 seconds
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 1));
 
       // Check if this account already exists by email
       if (accounts.any((account) => email == account['email'])) {
@@ -77,7 +77,7 @@ class AuthService {
   Future<Either<String, String>> forgotPassword({required String email}) async {
     try {
       // Mock loading with 2 seconds
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 1));
 
       // Check if this account already exists by email
       if (accounts.any((account) => email == account['email'])) {
