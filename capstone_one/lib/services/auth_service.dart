@@ -6,7 +6,7 @@ class AuthService {
   // A list of maps with keys and values (name, email, password)
   //TODO: remove 123 email and password later
   final List<Map<String, String>> accounts = [
-    {'email': '123', 'password': '123'},
+    {'email': '123@gmail.com', 'password': '123'},
   ];
 
   // ---------------------
