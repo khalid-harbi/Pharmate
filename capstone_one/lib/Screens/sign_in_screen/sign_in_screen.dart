@@ -18,13 +18,17 @@ class SignInScreen extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(),
+      // Purpose: React to state changes without rebuilding UI
       body: BlocListener<SignInBloc, SignInState>(
         listener: (context, state) {
           // To handle loadingIndicator
           if (loadingKey.currentContext != null &&
+              // .mounted means triggered currently on the screen
               loadingKey.currentContext!.mounted) {
+            // Remove from screen
             context.pop();
           }
+
           // Determine sign in state
           switch (state) {
             case SignInInitial _:
@@ -83,6 +87,8 @@ class SignInScreen extends HookWidget {
                     FilledButton(
                       child: Text("Sign In"),
                       onPressed: () {
+                        // We can access SignInBloc because we wrapped SignInScreen
+                        // with BlocProvider in route_app
                         context.read<SignInBloc>().add(
                           SignInRequestEvent(
                             email: emailController.text,
@@ -95,7 +101,12 @@ class SignInScreen extends HookWidget {
                       mainAxisAlignment: .center,
                       children: [
                         Text('Don\'t have an account?'),
-                        TextButton(onPressed: () {}, child: Text('Sign Up')),
+                        TextButton(
+                          onPressed: () {
+                            context.push(RouteKeys.signUpScreen);
+                          },
+                          child: Text('Sign Up'),
+                        ),
                       ],
                     ),
                   ],

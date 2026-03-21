@@ -13,8 +13,11 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               //! Theme #1
+              // We can access ThemeBloc because we wrapped
+              // the whole app with BlocProvider
               context.read<ThemeBloc>().add(ToggleThemeEvent());
             },
+            // Purpose: Rebuild UI when state changes
             icon: BlocBuilder<ThemeBloc, ThemeState>(
               builder: (context, state) {
                 return Icon(

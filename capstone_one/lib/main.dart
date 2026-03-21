@@ -10,7 +10,8 @@ void main() {
   // This runs GetIt setup
   Configuration.configureDependencies();
   runApp(
-    // Required for the theme
+    // Required for the theme for initial state
+    // Purpose: Provide or create the bloc
     BlocProvider(create: (context) => ThemeBloc(), child: const MainApp()),
   );
 }
@@ -21,12 +22,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Required for the theme
+    // Purpose: Rebuild UI when state changes
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
         // Check and apply theme state every time it changes
-        //! Theme #5
         return MaterialApp.router(
           routerConfig: RouteApp.routes,
+          //! Theme #5
           theme: state.themeData,
         );
       },
