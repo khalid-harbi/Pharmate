@@ -16,6 +16,13 @@ class SignInScreen extends HookWidget {
     // To handle loadingIndicator
     final loadingKey = GlobalKey();
 
+    //! I had to search for this
+    // useMemoized so the key doesn't get destroyed (changed) with every rebuild
+    // Remember and save the formKey
+    // If the screen rebuilds and the key changes, the new form starts completely fresh
+    // The red error text will vanish, even if the user hasn't fixed the format yet
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+
     return Scaffold(
       appBar: AppBar(),
       // Purpose: React to state changes without rebuilding UI
@@ -65,53 +72,60 @@ class SignInScreen extends HookWidget {
               Text('Welcome Back', style: TextStyle(fontWeight: .bold)),
               Text('Sign in to manage your medicines'),
               Card(
-                child: Column(
-                  children: [
-                    InputFormWidget(
-                      title: 'Email',
-                      hint: 'Enter your email',
-                      controller: emailController,
-                    ),
-                    InputFormWidget(
-                      title: 'Password',
-                      hint: 'Enter your password',
-                      controller: passwordController,
-                    ),
-                    Align(
-                      alignment: .centerEnd,
-                      child: TextButton(
-                        onPressed: () {
-                          context.push(RouteKeys.forgotPasswordScreen);
-                        },
-                        child: Text('Forgot Password?'),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      InputFormWidget(
+                        title: 'Email',
+                        hint: 'Enter your email',
+                        controller: emailController,
                       ),
-                    ),
-                    FilledButton(
-                      child: Text("Sign In"),
-                      onPressed: () {
-                        // We can access SignInBloc because we wrapped SignInScreen
-                        // with BlocProvider in route_app
-                        context.read<SignInBloc>().add(
-                          SignInRequestEvent(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          ),
-                        );
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: .center,
-                      children: [
-                        Text('Don\'t have an account?'),
-                        TextButton(
+                      InputFormWidget(
+                        title: 'Password',
+                        hint: 'Enter your password',
+                        controller: passwordController,
+                      ),
+                      Align(
+                        alignment: .centerEnd,
+                        child: TextButton(
                           onPressed: () {
-                            context.push(RouteKeys.signUpScreen);
+                            context.push(RouteKeys.forgotPasswordScreen);
                           },
-                          child: Text('Sign Up'),
+                          child: Text('Forgot Password?'),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      FilledButton(
+                        child: Text("Sign In"),
+                        onPressed: () {
+                          // This triggers 'validator' in every InputFormWidget
+                          // It returns 'true' ONLY if no fields return red error text
+                          if (formKey.currentState!.validate()) {
+                            // We can access SignInBloc because we wrapped SignInScreen
+                            // with BlocProvider in route_app
+                            context.read<SignInBloc>().add(
+                              SignInRequestEvent(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: .center,
+                        children: [
+                          Text('Don\'t have an account?'),
+                          TextButton(
+                            onPressed: () {
+                              context.push(RouteKeys.signUpScreen);
+                            },
+                            child: Text('Sign Up'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

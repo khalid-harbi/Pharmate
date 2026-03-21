@@ -17,6 +17,13 @@ class SignUpScreen extends HookWidget {
     final confirmPasswordController = useTextEditingController();
     final loadingKey = GlobalKey();
 
+    //! I had to search for this
+    // useMemoized so the key doesn't get destroyed (changed) with every rebuild
+    // Remember and save the formKey
+    // If the screen rebuilds and the key changes, the new form starts completely fresh
+    // The red error text will vanish, even if the user hasn't fixed the format yet
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+
     return Scaffold(
       appBar: AppBar(),
       body: BlocListener<SignUpBloc, SignUpState>(
@@ -74,56 +81,64 @@ class SignUpScreen extends HookWidget {
               Text('Create Account', style: TextStyle(fontWeight: .bold)),
               Text('Join us now to manage your medicines'),
               Card(
-                child: Column(
-                  children: [
-                    InputFormWidget(
-                      title: 'Full name',
-                      hint: 'Enter your full name',
-                      controller: fullNameController,
-                    ),
-                    InputFormWidget(
-                      title: 'Email',
-                      hint: 'Enter your email',
-                      controller: emailController,
-                    ),
-                    InputFormWidget(
-                      title: 'Password',
-                      hint: 'Create a password',
-                      controller: passwordController,
-                    ),
-                    InputFormWidget(
-                      title: 'Confirm Password',
-                      hint: 'Confirm your password',
-                      controller: confirmPasswordController,
-                    ),
-                    FilledButton(
-                      child: Text("Sign Up"),
-                      onPressed: () {
-                        // We can access SignInBloc because we wrapped SignInScreen
-                        // with BlocProvider in route_app
-                        context.read<SignUpBloc>().add(
-                          SignUpRequestEvent(
-                            name: fullNameController.text,
-                            email: emailController.text,
-                            password: passwordController.text,
-                            confirmPassword: confirmPasswordController.text,
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      InputFormWidget(
+                        title: 'Full name',
+                        hint: 'Enter your full name',
+                        controller: fullNameController,
+                      ),
+                      InputFormWidget(
+                        title: 'Email',
+                        hint: 'Enter your email',
+                        controller: emailController,
+                      ),
+                      InputFormWidget(
+                        title: 'Password',
+                        hint: 'Create a password',
+                        controller: passwordController,
+                      ),
+                      InputFormWidget(
+                        title: 'Confirm Password',
+                        hint: 'Confirm your password',
+                        controller: confirmPasswordController,
+                        matchController: passwordController,
+                      ),
+                      FilledButton(
+                        child: Text("Sign Up"),
+                        onPressed: () {
+                          // This triggers 'validator' in every InputFormWidget
+                          // It returns 'true' ONLY if no fields return red error text
+                          if (formKey.currentState!.validate()) {
+                            // We can access SignInBloc because we wrapped SignInScreen
+                            // with BlocProvider in route_app
+                            context.read<SignUpBloc>().add(
+                              SignUpRequestEvent(
+                                name: fullNameController.text,
+                                email: emailController.text,
+                                password: passwordController.text,
+                                confirmPassword: confirmPasswordController.text,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: .center,
+                        children: [
+                          Text('Already have an account?'),
+                          TextButton(
+                            onPressed: () {
+                              context.push(RouteKeys.signInScreen);
+                            },
+                            child: Text('Sign In'),
                           ),
-                        );
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: .center,
-                      children: [
-                        Text('Already have an account?'),
-                        TextButton(
-                          onPressed: () {
-                            context.push(RouteKeys.signInScreen);
-                          },
-                          child: Text('Sign In'),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
