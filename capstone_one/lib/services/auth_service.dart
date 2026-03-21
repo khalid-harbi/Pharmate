@@ -4,7 +4,10 @@ import 'package:fpdart/fpdart.dart';
 // Define services
 class AuthService {
   // A list of maps with keys and values (name, email, password)
-  final List<Map<String, String>> accounts = [];
+  //TODO: remove 123 email and password later
+  final List<Map<String, String>> accounts = [
+    {'email': '123', 'password': '123'},
+  ];
 
   // ---------------------
   // ---------------------
@@ -35,9 +38,7 @@ class AuthService {
       // Fail! (Because it's a Left)
       return Either.left("Invalid email or password. Please try again.");
     } catch (error) {
-      return Either.left(
-        "Something went wrong while Signing in. Please try again.",
-      );
+      return Either.left("Something went wrong. Please try again.");
     }
   }
 
@@ -65,9 +66,31 @@ class AuthService {
       // Success! (Because it's a Right)
       return Either.right('Account created successfully. You can now sign in.');
     } catch (error) {
-      return Either.left(
-        "Something went wrong while Signing up. Please try again.",
-      );
+      return Either.left("Something went wrong. Please try again.");
+    }
+  }
+
+  // ---------------------
+  // ---------------------
+  // ---------------------
+
+  Future<Either<String, String>> forgotPassword({required String email}) async {
+    try {
+      // Mock loading with 2 seconds
+      await Future.delayed(Duration(seconds: 2));
+
+      // Check if this account already exists by email
+      if (accounts.any((account) => email == account['email'])) {
+        // Success! (Because it's a Right)
+        return Either.right(
+          'A password reset link has been sent to your email.',
+        );
+      }
+
+      // Fail! (Because it's a Left)
+      return Either.left("No account found with this email address.");
+    } catch (error) {
+      return Either.left("Something went wrong. Please try again.");
     }
   }
 }

@@ -77,10 +77,12 @@ class SignInScreen extends HookWidget {
                       hint: 'Enter your password',
                       controller: passwordController,
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Align(
-                        alignment: .centerEnd,
+                    Align(
+                      alignment: .centerEnd,
+                      child: TextButton(
+                        onPressed: () {
+                          context.push(RouteKeys.forgotPasswordScreen);
+                        },
                         child: Text('Forgot Password?'),
                       ),
                     ),

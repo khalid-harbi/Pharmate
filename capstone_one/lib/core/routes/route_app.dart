@@ -1,3 +1,5 @@
+import 'package:capstone_one/Screens/forgot_password_screen/bloc/forgot_password_bloc.dart';
+import 'package:capstone_one/Screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:capstone_one/Screens/home_screen/home_screen.dart';
 import 'package:capstone_one/Screens/sign_in_screen/bloc/sign_in_bloc.dart';
 import 'package:capstone_one/Screens/sign_in_screen/sign_in_screen.dart';
@@ -34,6 +36,16 @@ class RouteApp {
           return BlocProvider(
             create: (context) => SignUpBloc(authService: getIt<AuthService>()),
             child: SignUpScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RouteKeys.forgotPasswordScreen,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) =>
+                ForgotPasswordBloc(authService: getIt<AuthService>()),
+            child: ForgotPasswordScreen(),
           );
         },
       ),
