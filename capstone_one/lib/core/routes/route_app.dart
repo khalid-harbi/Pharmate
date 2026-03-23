@@ -1,6 +1,10 @@
+import 'package:capstone_one/Screens/add_screen/add_screen.dart';
+import 'package:capstone_one/Screens/cabinet_screen/cabinet_screen.dart';
 import 'package:capstone_one/Screens/forgot_password_screen/bloc/forgot_password_bloc.dart';
 import 'package:capstone_one/Screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:capstone_one/Screens/home_screen/home_screen.dart';
+import 'package:capstone_one/Screens/main_screen/main_screen.dart';
+import 'package:capstone_one/Screens/settings_screen/settings_screen.dart';
 import 'package:capstone_one/Screens/sign_in_screen/bloc/sign_in_bloc.dart';
 import 'package:capstone_one/Screens/sign_in_screen/sign_in_screen.dart';
 import 'package:capstone_one/Screens/sign_up_screen/bloc/sign_up_bloc.dart';
@@ -16,7 +20,63 @@ class RouteApp {
 
   static final routes = GoRouter(
     initialLocation: RouteKeys.signInScreen,
+
+    // -------------------------
+    // -------------------------
     routes: [
+      // -------------------------
+      // -------------------------
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          // navigationShell manages tab switching and state
+          // Starts with holding Branch 0
+          return MainScreen(navigationShell: navigationShell);
+        },
+
+        // -------------------------
+        // -------------------------
+        branches: [
+          // Branch 0
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RouteKeys.homeScreen,
+                builder: (context, state) {
+                  return HomeScreen();
+                },
+              ),
+            ],
+          ),
+
+          // Branch 1
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RouteKeys.cabinetScreen,
+                builder: (context, state) {
+                  return CabinetScreen();
+                },
+              ),
+            ],
+          ),
+
+          // Branch 2
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RouteKeys.settingsScreen,
+                builder: (context, state) {
+                  return SettingsScreen();
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+
+      // -------------------------
+      // -------------------------
+      // -------------------------
       GoRoute(
         path: RouteKeys.signInScreen,
         builder: (context, state) {
@@ -50,9 +110,9 @@ class RouteApp {
         },
       ),
       GoRoute(
-        path: RouteKeys.homeScreen,
+        path: RouteKeys.addScreen,
         builder: (context, state) {
-          return HomeScreen();
+          return AddScreen();
         },
       ),
     ],
