@@ -18,7 +18,9 @@ class InputFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Email with specific format using regular expressions
     final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(

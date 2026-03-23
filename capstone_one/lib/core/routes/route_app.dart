@@ -1,4 +1,5 @@
 import 'package:capstone_one/Screens/add_screen/add_screen.dart';
+import 'package:capstone_one/Screens/search_screen/search_screen.dart';
 import 'package:capstone_one/Screens/cabinet_screen/cabinet_screen.dart';
 import 'package:capstone_one/Screens/forgot_password_screen/bloc/forgot_password_bloc.dart';
 import 'package:capstone_one/Screens/forgot_password_screen/forgot_password_screen.dart';
@@ -110,9 +111,16 @@ class RouteApp {
         },
       ),
       GoRoute(
+        path: RouteKeys.searchScreen,
+        builder: (context, state) {
+          return SearchScreen();
+        },
+      ),
+      GoRoute(
         path: RouteKeys.addScreen,
         builder: (context, state) {
-          return AddScreen();
+          final passedBrandName = state.extra as String;
+          return AddScreen(brandName: passedBrandName);
         },
       ),
     ],

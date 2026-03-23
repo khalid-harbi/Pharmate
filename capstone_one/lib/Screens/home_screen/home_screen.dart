@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.large(
         onPressed: () {
-          context.push(RouteKeys.addScreen);
+          context.push(RouteKeys.searchScreen);
         },
         child: Icon(Icons.add),
       ),

@@ -72,9 +72,9 @@ class SignInScreen extends HookWidget {
               Text('Logo'),
               Text('Welcome Back', style: TextStyle(fontWeight: .bold)),
               Text('Sign in to manage your medicines'),
-              Card(
-                child: Form(
-                  key: formKey,
+              Form(
+                key: formKey,
+                child: Card(
                   child: Column(
                     children: [
                       InputFormWidget(
