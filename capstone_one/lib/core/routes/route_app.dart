@@ -1,3 +1,4 @@
+import 'package:capstone_one/Models/medicine_details_model.dart';
 import 'package:capstone_one/Screens/add_screen/add_screen.dart';
 import 'package:capstone_one/Screens/search_screen/search_screen.dart';
 import 'package:capstone_one/Screens/cabinet_screen/cabinet_screen.dart';
@@ -119,8 +120,8 @@ class RouteApp {
       GoRoute(
         path: RouteKeys.addScreen,
         builder: (context, state) {
-          final passedBrandName = state.extra as String;
-          return AddScreen(brandName: passedBrandName);
+          final passedMedicineDetails = state.extra as MedicineDetailsModel;
+          return AddScreen(medicineDetails: passedMedicineDetails);
         },
       ),
     ],

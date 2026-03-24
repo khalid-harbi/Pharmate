@@ -15,11 +15,14 @@ class HomeScreen extends StatelessWidget {
           child: Center(child: Column(children: [Text('Hi!')])),
         ),
       ),
-      floatingActionButton: FloatingActionButton.large(
-        onPressed: () {
-          context.push(RouteKeys.searchScreen);
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: EdgeInsetsGeometry.only(right: 8, bottom: 16),
+        child: FloatingActionButton.large(
+          onPressed: () {
+            context.push(RouteKeys.searchScreen);
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:capstone_one/Models/medicine_details_model.dart';
 import 'package:capstone_one/Models/medicine_model.dart';
 import 'package:capstone_one/core/network/network_method.dart';
 import 'package:capstone_one/core/routes/route_keys.dart';
@@ -53,7 +54,11 @@ class SearchScreen extends HookWidget {
                   ),
                 ),
                 Gap(8),
+
+                // ---------------------------
+                // ---------------------------
                 FilledButton(
+                  //TODO: This logic should be in bloc
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
                       isLoading.value = true;
@@ -79,13 +84,62 @@ class SearchScreen extends HookWidget {
                       itemBuilder: (context, index) {
                         return ListTile(
                           leading: Icon(Icons.medication),
-                          onTap: () {
-                            context.push(
-                              RouteKeys.addScreen,
-                              // Send exact brand name to go router
-                              extra: loadedMedicines.value[index].brandName,
+
+                          //TODO: This logic should be in bloc
+                          onTap: () async {
+                            // ---------------------------
+                            // ---------------------------
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
                             );
-                            //TODO: display medicine details when clicked
+                            try {
+                              final api = NetworkMethod(
+                                medicineName:
+                                    loadedMedicines.value[index].brandName,
+                              );
+
+                              // Create the Medicine Object
+                              final MedicineDetailsModel? details = await api
+                                  .getMedicineDetails();
+
+                              //! I had to search for this
+                              if (context.mounted) {
+                                Navigator.pop(context);
+                                context.push(
+                                  RouteKeys.addScreen,
+                                  extra: details,
+                                );
+                              }
+                            } catch (e) {
+                              if (context.mounted) {
+                                Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text(
+                                      'Unable to load details!',
+                                    ),
+                                    content: const Text(
+                                      'We encountered a problem fetching the medicine details. Please check your connection and try again.',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(
+                                            context,
+                                          ); // Close the error dialog
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            }
                           },
                           title: Text(loadedMedicines.value[index].brandName),
                         );
