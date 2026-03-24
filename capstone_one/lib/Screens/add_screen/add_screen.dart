@@ -9,14 +9,20 @@ class AddScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: EdgeInsetsGeometry.only(right: 8, bottom: 16),
-        child: FloatingActionButton.large(
-          onPressed: () {},
-          child: Icon(Icons.add),
-        ),
+      appBar: AppBar(
+        actionsPadding: EdgeInsets.only(right: 16),
+        actions: [
+          TextButton(
+            onPressed: () {
+              //TODO: Add Medicine logic
+            },
+            child: Text(
+              'Add',
+              style: TextStyle(fontWeight: .bold, fontSize: 18),
+            ),
+          ),
+        ],
       ),
-      appBar: AppBar(),
       body: SafeArea(
         child: Center(
           child: Column(
