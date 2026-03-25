@@ -60,8 +60,17 @@ class AppThemes {
       ),
     ),
 
-    //TODO: continue later
-    buttonTheme: ButtonThemeData(),
+    //* filledButtonTheme
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: _teal,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
   );
 
   //------------------------------------
@@ -107,10 +116,27 @@ class AppThemes {
 
     //* inputDecoration
     inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(color: _darkBlue.withAlpha(150)),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: _paleGreen),
+        borderRadius: BorderRadius.circular(12),
       ),
-      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: _teal)),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: _teal),
+        borderRadius: BorderRadius.circular(12),
+      ),
+    ),
+
+    //* filledButtonTheme
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: _paleGreen,
+        foregroundColor: _deepNavy,
+        elevation: 0,
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
     ),
   );
 }

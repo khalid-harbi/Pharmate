@@ -110,8 +110,14 @@ class SearchScreen extends HookWidget {
                               if (context.mounted) {
                                 Navigator.pop(context);
                                 context.push(
-                                  RouteKeys.addScreen,
-                                  extra: details,
+                                  RouteKeys.medicineDetailsScreen,
+
+                                  // Pass more than one extra as a map
+                                  extra: {
+                                    'details': details,
+                                    'brandName':
+                                        loadedMedicines.value[index].brandName,
+                                  },
                                 );
                               }
                             } catch (e) {
