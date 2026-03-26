@@ -1,6 +1,8 @@
 import 'package:capstone_one/Models/medicine_details_model.dart';
 import 'package:capstone_one/Screens/add_screen/add_screen.dart';
+import 'package:capstone_one/Screens/add_screen/bloc/add_bloc.dart';
 import 'package:capstone_one/Screens/medicine_details_screen/medicine_details_screen.dart';
+import 'package:capstone_one/Screens/search_screen/bloc/search_bloc.dart';
 import 'package:capstone_one/Screens/search_screen/search_screen.dart';
 import 'package:capstone_one/Screens/cabinet_screen/cabinet_screen.dart';
 import 'package:capstone_one/Screens/forgot_password_screen/bloc/forgot_password_bloc.dart';
@@ -15,6 +17,7 @@ import 'package:capstone_one/Screens/sign_up_screen/sign_up_screen.dart';
 import 'package:capstone_one/core/configuration.dart';
 import 'package:capstone_one/core/routes/route_keys.dart';
 import 'package:capstone_one/services/auth_service.dart';
+import 'package:capstone_one/services/medicines_management_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -115,7 +118,12 @@ class RouteApp {
       GoRoute(
         path: RouteKeys.searchScreen,
         builder: (context, state) {
-          return SearchScreen();
+          return BlocProvider(
+            create: (context) => SearchBloc(
+              medicineService: getIt<MedicinesManagementService>(),
+            ),
+            child: SearchScreen(),
+          );
         },
       ),
       GoRoute(
@@ -136,7 +144,11 @@ class RouteApp {
         path: RouteKeys.addScreen,
         builder: (context, state) {
           final passedBrandName = state.extra as String;
-          return AddScreen(brandName: passedBrandName);
+          return BlocProvider(
+            create: (context) =>
+                AddBloc(medicineService: getIt<MedicinesManagementService>()),
+            child: AddScreen(brandName: passedBrandName),
+          );
         },
       ),
     ],

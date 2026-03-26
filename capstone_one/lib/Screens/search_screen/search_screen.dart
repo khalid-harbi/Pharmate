@@ -1,9 +1,8 @@
-import 'package:capstone_one/Models/medicine_details_model.dart';
-import 'package:capstone_one/Models/medicine_model.dart';
-import 'package:capstone_one/core/network/network_method.dart';
+import 'package:capstone_one/Screens/search_screen/bloc/search_bloc.dart';
 import 'package:capstone_one/core/routes/route_keys.dart';
 import 'package:capstone_one/widgets/input_form_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -14,13 +13,10 @@ class SearchScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final searchController = useTextEditingController();
+    // Save the value to memory
     final formKey = useMemoized(() => GlobalKey<FormState>());
-
-    // Variable declaration with HookWidget is different
-    final loadedMedicines = useState<List<MedicineModel>>([]);
-
-    //! I had to search for this
-    final isLoading = useState(false);
+    final loadingKey = useMemoized(() => GlobalKey());
+    final selectedBrandName = useState<String>('');
 
     return Scaffold(
       appBar: AppBar(
@@ -30,129 +26,153 @@ class SearchScreen extends HookWidget {
         ),
         centerTitle: false,
       ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 400,
-                  height: 220,
-                  child: Form(
-                    key: formKey,
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: InputFormWidget(
-                          title: 'Medicine name',
-                          hint: 'Enter Medicine name',
-                          controller: searchController,
+      body: BlocListener<SearchBloc, SearchState>(
+        listener: (context, state) {
+          // To handle loadingIndicator
+          if (loadingKey.currentContext != null &&
+              // .mounted means triggered currently on the screen
+              loadingKey.currentContext!.mounted) {
+            // Remove from screen
+            context.pop();
+          }
+
+          // Determine search state
+          switch (state) {
+            case SearchInitial _:
+              break;
+            case MedicinesLoadingState _:
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) =>
+                    // Set loadingKey to this Center widget
+                    Center(key: loadingKey, child: CircularProgressIndicator()),
+              );
+              break;
+            case MedicinesFetchingSuccessfulState _:
+              // Handled with build when later
+              break;
+            case MedicinesLoadingFailedState _:
+              showDialog(
+                context: context,
+                builder: (context) => Center(
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Text(state.message),
+                  ),
+                ),
+              );
+            case MedicineDetailsLoadingState _:
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) =>
+                    // Set loadingKey to this Center widget
+                    Center(key: loadingKey, child: CircularProgressIndicator()),
+              );
+              break;
+            case MedicineDetailsSuccessfulState _:
+              context.push(
+                RouteKeys.medicineDetailsScreen,
+                // Pass more than one extra as a map
+                extra: {
+                  'details': state.medicineDetails,
+                  'brandName': selectedBrandName.value,
+                },
+              );
+              break;
+            case MedicineDetailsFailedState _:
+              showDialog(
+                context: context,
+                builder: (context) => Center(
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Text(state.message),
+                  ),
+                ),
+              );
+              break;
+          }
+        },
+        child: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 400,
+                    height: 220,
+                    child: Form(
+                      key: formKey,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: InputFormWidget(
+                            title: 'Medicine name',
+                            hint: 'Enter Medicine name',
+                            controller: searchController,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Gap(8),
+                  Gap(8),
 
-                // ---------------------------
-                // ---------------------------
-                FilledButton(
-                  //TODO: This logic should be in bloc
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      isLoading.value = true;
-                      final api = NetworkMethod(
-                        //! Send controller value #1
-                        medicineName: searchController.text,
-                      );
-
-                      loadedMedicines.value = await api.getAllSearchResults();
-                      isLoading.value = false;
-                    }
-                  },
-                  child: Text('Search', style: TextStyle(fontWeight: .bold)),
-                ),
-                Gap(16),
-                if (isLoading.value) // Display loading when true
-                  //TODO: set max time for loading then display No results found
-                  SizedBox(child: Center(child: CircularProgressIndicator()))
-                else
+                  // ---------------------------
+                  // ---------------------------
+                  FilledButton(
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        context.read<SearchBloc>().add(
+                          //! Send controller value #1
+                          SearchRequestEvent(searchText: searchController.text),
+                        );
+                      }
+                    },
+                    child: Text('Search', style: TextStyle(fontWeight: .bold)),
+                  ),
+                  Gap(16),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: loadedMedicines.value.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: Icon(Icons.medication),
+                    child: BlocBuilder<SearchBloc, SearchState>(
+                      //! I had to search for this
+                      buildWhen: (previous, current) {
+                        // Redraw the list if it was successfully fetched
+                        return current is MedicinesFetchingSuccessfulState;
+                      },
+                      builder: (context, state) {
+                        if (state is MedicinesFetchingSuccessfulState) {
+                          return ListView.builder(
+                            itemCount: state.medicines.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: Icon(Icons.medication),
 
-                          //TODO: This logic should be in bloc
-                          onTap: () async {
-                            // ---------------------------
-                            // ---------------------------
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                            try {
-                              final api = NetworkMethod(
-                                medicineName:
-                                    loadedMedicines.value[index].brandName,
+                                onTap: () async {
+                                  selectedBrandName.value =
+                                      state.medicines[index].brandName;
+                                  context.read<SearchBloc>().add(
+                                    DetailsRequestEvent(
+                                      brandName:
+                                          state.medicines[index].brandName,
+                                    ),
+                                  );
+                                },
+                                title: Text(state.medicines[index].brandName),
                               );
-
-                              // Create the Medicine Object
-                              final MedicineDetailsModel? details = await api
-                                  .getMedicineDetails();
-
-                              //! I had to search for this
-                              if (context.mounted) {
-                                Navigator.pop(context);
-                                context.push(
-                                  RouteKeys.medicineDetailsScreen,
-
-                                  // Pass more than one extra as a map
-                                  extra: {
-                                    'details': details,
-                                    'brandName':
-                                        loadedMedicines.value[index].brandName,
-                                  },
-                                );
-                              }
-                            } catch (e) {
-                              if (context.mounted) {
-                                Navigator.pop(context);
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: const Text(
-                                      'Unable to load details!',
-                                    ),
-                                    content: const Text(
-                                      'We encountered a problem fetching the medicine details. Please check your connection and try again.',
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(
-                                            context,
-                                          ); // Close the error dialog
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            }
-                          },
-                          title: Text(loadedMedicines.value[index].brandName),
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: Text('Enter a name to search'),
                         );
                       },
                     ),
                   ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

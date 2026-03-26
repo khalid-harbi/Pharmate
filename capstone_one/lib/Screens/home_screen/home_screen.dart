@@ -1,6 +1,6 @@
 import 'package:capstone_one/core/configuration.dart';
 import 'package:capstone_one/core/routes/route_keys.dart';
-import 'package:capstone_one/services/added_medicines_service.dart';
+import 'package:capstone_one/services/medicines_management_service.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final addedMedicines = getIt<AddedMedicinesService>().addedMedicines;
+    final addedMedicines = getIt<MedicinesManagementService>().addedMedicines;
     return Scaffold(
       appBar: AppBar(),
       body: Padding(

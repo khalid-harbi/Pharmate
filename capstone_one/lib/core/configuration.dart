@@ -1,5 +1,5 @@
-import 'package:capstone_one/services/added_medicines_service.dart';
 import 'package:capstone_one/services/auth_service.dart';
+import 'package:capstone_one/services/medicines_management_service.dart';
 import 'package:get_it/get_it.dart';
 
 //! GetIt
@@ -12,6 +12,8 @@ abstract class Configuration {
   static void configureDependencies() {
     getIt.registerSingleton<AuthService>(AuthService());
 
-    getIt.registerSingleton<AddedMedicinesService>(AddedMedicinesService());
+    getIt.registerSingleton<MedicinesManagementService>(
+      MedicinesManagementService(),
+    );
   }
 }
