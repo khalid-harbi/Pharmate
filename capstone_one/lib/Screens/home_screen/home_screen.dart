@@ -38,16 +38,19 @@ class HomeScreen extends StatelessWidget {
                                 leading: Checkbox(
                                   // Take the value from the model
                                   value: addedMedicines[index].isTaken,
-                                  onChanged: (bool? newValue) {
-                                    context.read<HomeBloc>().add(
-                                      MedicineTakenEvent(
-                                        // Send current index to update each tile individually
-                                        index: index,
-                                        // Value after clicking will be sent too
-                                        newValue: newValue ?? false,
-                                      ),
-                                    );
-                                  },
+                                  onChanged: addedMedicines[index].isTaken
+                                      // if value is true return null to greys out the checkbox and prevent the user from unchecking
+                                      ? null
+                                      : (bool? newValue) {
+                                          context.read<HomeBloc>().add(
+                                            MedicineTakenEvent(
+                                              // Send current index to update each tile individually
+                                              index: index,
+                                              // Value after clicking will be sent too
+                                              newValue: newValue ?? false,
+                                            ),
+                                          );
+                                        },
                                 ),
                                 title: Row(
                                   children: [
