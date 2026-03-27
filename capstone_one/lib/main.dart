@@ -38,6 +38,7 @@ class MainApp extends StatelessWidget {
       builder: (context, state) {
         // Check and apply theme state every time it changes
         return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           routerConfig: RouteApp.routes,
           //! Theme #5
           theme: state.themeData,
