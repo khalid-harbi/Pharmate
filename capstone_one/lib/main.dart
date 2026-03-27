@@ -1,3 +1,4 @@
+import 'package:capstone_one/Screens/home_screen/bloc/home_bloc.dart';
 import 'package:capstone_one/core/configuration.dart';
 import 'package:capstone_one/core/routes/route_app.dart';
 import 'package:capstone_one/core/themes/bloc/theme_bloc.dart';
@@ -10,9 +11,19 @@ void main() {
   // This runs GetIt setup
   Configuration.configureDependencies();
   runApp(
-    // Required for the theme for initial state
     // Purpose: Provide or create the bloc
-    BlocProvider(create: (context) => ThemeBloc(), child: const MainApp()),
+    // More than one provider using Multi
+    MultiBlocProvider(
+      providers: [
+        // Required for the theme for initial state
+        BlocProvider(create: (context) => ThemeBloc()),
+        BlocProvider(
+          // Automatically triggers the event when navigating to the screen
+          create: (context) => HomeBloc()..add(LoadAddedMedicinesEvent()),
+        ),
+      ],
+      child: const MainApp(),
+    ),
   );
 }
 

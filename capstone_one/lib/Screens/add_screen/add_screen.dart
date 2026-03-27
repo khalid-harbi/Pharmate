@@ -1,4 +1,5 @@
 import 'package:capstone_one/Screens/add_screen/bloc/add_bloc.dart';
+import 'package:capstone_one/Screens/home_screen/bloc/home_bloc.dart';
 import 'package:capstone_one/core/routes/route_keys.dart';
 import 'package:capstone_one/widgets/input_form_widget.dart';
 import 'package:flutter/material.dart';
@@ -52,17 +53,22 @@ class AddScreen extends HookWidget {
               );
               break;
             case AddSuccessfulState _:
+              // Refresh the addMedicines list in home screen
+              context.read<HomeBloc>().add(LoadAddedMedicinesEvent());
               context.go(RouteKeys.homeScreen);
               break;
             case AddFailedState _:
               showDialog(
                 context: context,
-                builder: (context) => Center(
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Text(state.message),
-                  ),
+                builder: (context) => AlertDialog(
+                  title: Text('Failed to Add'),
+                  content: Text(state.message),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK'),
+                    ),
+                  ],
                 ),
               );
           }

@@ -32,6 +32,7 @@ class RouteApp {
     routes: [
       // -------------------------
       // -------------------------
+      // Keeps every tab state in memory
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           // navigationShell manages tab switching and state

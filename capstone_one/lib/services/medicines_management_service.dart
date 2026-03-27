@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 
 class MedicinesManagementService {
+  // Search medicines
   List<MedicineModel> medicines = [];
+  // Added Medicines
   List<NewMedicineModel> addedMedicines = [];
 
   // ---------------------
@@ -72,15 +74,20 @@ class MedicinesManagementService {
     required ValueNotifier<TimeOfDay?> selectedTime,
     required String brandName,
     required String assignedTo,
-    //TODO: change to int later
     required String numberOfPills,
     required String frequency,
   }) async {
     try {
       //! I had to search for this
       // Format TimeOfDay to a String for easier storage/notifications
+      final hour = selectedTime.value!.hour;
+      final minute = selectedTime.value!.minute;
+
+      final period = hour >= 12 ? 'PM' : 'AM';
+      final hour12 = hour % 12 == 0 ? 12 : hour % 12;
+
       final timeString =
-          '${selectedTime.value!.hour.toString().padLeft(2, '0')}:${selectedTime.value!.minute.toString().padLeft(2, '0')}';
+          '${hour12.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')} $period';
 
       final NewMedicineModel newMedicine = NewMedicineModel(
         brandName: brandName,
@@ -88,6 +95,7 @@ class MedicinesManagementService {
         numberOfPills: numberOfPills,
         time: timeString,
         frequency: frequency,
+        isTaken: false,
       );
       addedMedicines.add(newMedicine);
 

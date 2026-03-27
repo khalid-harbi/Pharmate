@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
 class InputFormWidget extends StatelessWidget {
@@ -35,7 +36,13 @@ class InputFormWidget extends StatelessWidget {
             // Only apply this check if this is an Email field
             keyboardType: title == 'Email'
                 ? TextInputType.emailAddress
+                : title == 'Number of Pills'
+                ? TextInputType.number
                 : TextInputType.text,
+
+            inputFormatters: title == 'Number of Pills'
+                ? [FilteringTextInputFormatter.digitsOnly]
+                : [],
 
             controller: controller,
 

@@ -6,7 +6,6 @@ sealed class AddEvent {}
 class AddMedicineEvent extends AddEvent {
   final String brandName;
   final String assignedTo;
-  //TODO: change to int later
   final String numberOfPills;
   final String frequency;
   final ValueNotifier<TimeOfDay?> selectedTime;
