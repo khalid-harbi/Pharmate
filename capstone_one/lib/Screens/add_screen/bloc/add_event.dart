@@ -9,6 +9,8 @@ class AddMedicineEvent extends AddEvent {
   final String numberOfPills;
   final String frequency;
   final ValueNotifier<TimeOfDay?> selectedTime;
+  final String? dayOfWeek;
+  final int? dayOfMonth;
 
   AddMedicineEvent({
     required this.brandName,
@@ -16,5 +18,7 @@ class AddMedicineEvent extends AddEvent {
     required this.numberOfPills,
     required this.frequency,
     required this.selectedTime,
+    this.dayOfWeek,
+    this.dayOfMonth,
   });
 }

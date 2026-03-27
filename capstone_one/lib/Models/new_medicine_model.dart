@@ -4,6 +4,9 @@ class NewMedicineModel {
   String numberOfPills;
   final String time;
   final String frequency;
+  final String? dayOfWeek;
+  final int? dayOfMonth;
+  DateTime? lastResetDate;
   bool isTaken;
 
   NewMedicineModel({
@@ -13,5 +16,8 @@ class NewMedicineModel {
     required this.frequency,
     required this.brandName,
     required this.isTaken,
+    this.dayOfWeek,
+    this.dayOfMonth,
+    this.lastResetDate,
   });
 }

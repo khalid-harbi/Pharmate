@@ -6,8 +6,8 @@ sealed class HomeEvent {}
 class LoadAddedMedicinesEvent extends HomeEvent {}
 
 class MedicineTakenEvent extends HomeEvent {
-  final int index;
+  final NewMedicineModel medicine;
   final bool newValue;
 
-  MedicineTakenEvent({required this.index, required this.newValue});
+  MedicineTakenEvent({required this.newValue, required this.medicine});
 }

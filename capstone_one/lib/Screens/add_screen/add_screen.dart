@@ -21,6 +21,10 @@ class AddScreen extends HookWidget {
     final selectedTime = useState<TimeOfDay?>(null);
     final selectedFrequency = useState<String>('Daily');
 
+    // NEW: State variables to hold the specific reset days
+    final selectedDayOfWeek = useState<String>('Sunday');
+    final selectedDayOfMonth = useState<int>(1);
+
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final loadingKey = useMemoized(() => GlobalKey());
 
@@ -81,6 +85,17 @@ class AddScreen extends HookWidget {
                 key: formKey,
                 child: Column(
                   children: [
+                    Align(
+                      alignment: .center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          brandName,
+                          textAlign: .center,
+                          style: TextStyle(fontWeight: .bold, fontSize: 24),
+                        ),
+                      ),
+                    ),
                     Card(
                       child: Padding(
                         padding: const EdgeInsets.all(16),
@@ -101,7 +116,16 @@ class AddScreen extends HookWidget {
                               ],
                             ),
                             Gap(16),
-                            Text('Medicine: $brandName'),
+                            // Align(
+                            //   alignment: .center,
+                            //   child: Text(
+                            //     brandName,
+                            //     style: TextStyle(
+                            //       fontWeight: .bold,
+                            //       fontSize: 24,
+                            //     ),
+                            //   ),
+                            // ),
                             InputFormWidget(
                               title: 'Assigned To',
                               hint: 'Who is taking the pills',
@@ -112,80 +136,191 @@ class AddScreen extends HookWidget {
                               hint: 'Enter the number of pills',
                               controller: numberOfPillsController,
                             ),
-                            Text(
-                              'Reminder Time',
-                              style: TextStyle(fontWeight: .bold),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Text(
+                                'Reminder Time',
+                                style: TextStyle(fontWeight: .bold),
+                              ),
                             ),
-                            Gap(8),
                             //! I had to search for this
-                            InkWell(
-                              // async because TimeOfDay is Future
-                              onTap: () async {
-                                final time = await showTimePicker(
-                                  context: context,
-                                  initialTime:
-                                      selectedTime.value ?? TimeOfDay.now(),
-                                );
-                                if (time != null) {
-                                  selectedTime.value = time;
-                                }
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 16,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 0.5,
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16,
+                                right: 16,
+                                top: 8,
+                                bottom: 16,
+                              ),
+                              child: InkWell(
+                                // async because TimeOfDay is Future
+                                onTap: () async {
+                                  final time = await showTimePicker(
+                                    context: context,
+                                    initialTime:
+                                        selectedTime.value ?? TimeOfDay.now(),
+                                  );
+                                  if (time != null) {
+                                    selectedTime.value = time;
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 16,
                                   ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  // Icon at the end right
-                                  mainAxisAlignment: .spaceBetween,
-                                  children: [
-                                    Text(
-                                      selectedTime.value?.format(context) ??
-                                          'Select Time',
-                                      style: TextStyle(
-                                        color: selectedTime.value == null
-                                            ? Color(0xFF116484).withAlpha(150)
-                                            : Color(0xFF116484),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    const Icon(
-                                      Icons.access_time,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
                                       color: Colors.grey,
+                                      width: 0.5,
                                     ),
-                                  ],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    // Icon at the end right
+                                    mainAxisAlignment: .spaceBetween,
+                                    children: [
+                                      Text(
+                                        selectedTime.value?.format(context) ??
+                                            'Select Time',
+                                        style: TextStyle(
+                                          color: selectedTime.value == null
+                                              ? Color(0xFF116484).withAlpha(150)
+                                              : Color(0xFF116484),
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      const Icon(
+                                        Icons.access_time,
+                                        color: Colors.grey,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                             Gap(16),
-                            Text(
-                              'Frequency',
-                              style: TextStyle(fontWeight: .bold),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Text(
+                                'Frequency',
+                                style: TextStyle(fontWeight: .bold),
+                              ),
                             ),
-                            const Gap(8),
-                            DropdownButtonFormField<String>(
-                              initialValue: selectedFrequency.value,
-                              items: ['Daily', 'Weekly', 'Monthly'].map((
-                                String value,
-                              ) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                if (newValue != null) {
-                                  selectedFrequency.value = newValue;
-                                }
-                              },
+                            //! I had to search for this
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16,
+                                right: 16,
+                                top: 8,
+                                bottom: 16,
+                              ),
+                              child: DropdownButtonFormField<String>(
+                                initialValue: selectedFrequency.value,
+                                icon: Padding(
+                                  padding: EdgeInsets.only(right: 16),
+                                  child: Icon(Icons.arrow_drop_down),
+                                ),
+                                items: ['Daily', 'Weekly', 'Monthly'].map((
+                                  String value,
+                                ) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  if (newValue != null) {
+                                    selectedFrequency.value = newValue;
+                                  }
+                                },
+                              ),
                             ),
+
+                            //! I had to search for this
+                            // Conditional UI for Weekly
+                            if (selectedFrequency.value == 'Weekly') ...[
+                              const Gap(16),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: const Text(
+                                  'Day of the Week',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              const Gap(8),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  right: 16,
+                                  top: 0,
+                                  bottom: 16,
+                                ),
+                                child: DropdownButtonFormField<String>(
+                                  initialValue: selectedDayOfWeek.value,
+                                  items:
+                                      [
+                                            'Sunday',
+                                            'Monday',
+                                            'Tuesday',
+                                            'Wednesday',
+                                            'Thursday',
+                                            'Friday',
+                                            'Saturday',
+                                          ]
+                                          .map(
+                                            (day) => DropdownMenuItem(
+                                              value: day,
+                                              child: Text(day),
+                                            ),
+                                          )
+                                          .toList(),
+                                  onChanged: (newValue) {
+                                    if (newValue != null) {
+                                      selectedDayOfWeek.value = newValue;
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+
+                            //! I had to search for this
+                            // Conditional UI for Monthly
+                            if (selectedFrequency.value == 'Monthly') ...[
+                              Gap(16),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: Text(
+                                  'Day of the Month',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Gap(8),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  right: 16,
+                                  top: 0,
+                                  bottom: 16,
+                                ),
+                                child: DropdownButtonFormField<int>(
+                                  initialValue: selectedDayOfMonth.value,
+                                  // Generates numbers 1 through 31
+                                  items: List.generate(31, (index) => index + 1)
+                                      .map(
+                                        (day) => DropdownMenuItem(
+                                          value: day,
+                                          child: Text(day.toString()),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (newValue) {
+                                    if (newValue != null) {
+                                      selectedDayOfMonth.value = newValue;
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                       ),
@@ -220,6 +355,12 @@ class AddScreen extends HookWidget {
                                 numberOfPills: numberOfPillsController.text,
                                 frequency: selectedFrequency.value,
                                 selectedTime: selectedTime,
+                                dayOfWeek: selectedFrequency.value == 'Weekly'
+                                    ? selectedDayOfWeek.value
+                                    : null,
+                                dayOfMonth: selectedFrequency.value == 'Monthly'
+                                    ? selectedDayOfMonth.value
+                                    : null,
                               ),
                             );
                           }

@@ -165,9 +165,7 @@ class SearchScreen extends HookWidget {
                             },
                           );
                         }
-                        return const Center(
-                          child: Text('Enter a name to search'),
-                        );
+                        return Center(child: null);
                       },
                     ),
                   ),

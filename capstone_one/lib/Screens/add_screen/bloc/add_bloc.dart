@@ -30,6 +30,8 @@ class AddBloc extends Bloc<AddEvent, AddState> {
       assignedTo: event.assignedTo,
       numberOfPills: event.numberOfPills,
       frequency: event.frequency,
+      dayOfWeek: event.dayOfWeek,
+      dayOfMonth: event.dayOfMonth,
     )).fold(
       // Check returned results from fp dart MedicinesManagementService details method
       (onLeft) {

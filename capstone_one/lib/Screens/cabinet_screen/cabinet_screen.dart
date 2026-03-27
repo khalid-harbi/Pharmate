@@ -20,7 +20,15 @@ class CabinetScreen extends StatelessWidget {
             case HomeInitial _:
               break;
             case LoadAddedMedicinesState _:
-              addedMedicines = state.addedMedicines;
+
+              // Merge two lists
+              addedMedicines = [
+                ...state.todaysMedicines,
+                ...state.upcomingMedicines,
+              ];
+              if (addedMedicines.isEmpty) {
+                return const Center(child: Text('No medicines added yet.'));
+              }
               return Padding(
                 padding: const EdgeInsets.all(16),
                 child: SafeArea(
@@ -42,6 +50,7 @@ class CabinetScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         addedMedicines[index].brandName,
+                                        textAlign: .center,
                                         style: TextStyle(fontWeight: .bold),
                                       ),
                                       Gap(8),

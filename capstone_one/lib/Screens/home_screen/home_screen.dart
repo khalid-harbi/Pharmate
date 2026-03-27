@@ -11,7 +11,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<NewMedicineModel> addedMedicines;
     return Scaffold(
       appBar: AppBar(),
       body: BlocBuilder<HomeBloc, HomeState>(
@@ -20,64 +19,144 @@ class HomeScreen extends StatelessWidget {
             case HomeInitial _:
               break;
             case LoadAddedMedicinesState _:
-              addedMedicines = state.addedMedicines;
-              if (addedMedicines.isEmpty) {
-                return Center(child: Text('No medicines added yet.'));
+              final List<NewMedicineModel> todaysMedicines =
+                  state.todaysMedicines;
+              final List<NewMedicineModel> upcomingMedicines =
+                  state.upcomingMedicines;
+
+              if (todaysMedicines.isEmpty && upcomingMedicines.isEmpty) {
+                return const Center(child: Text('No medicines added yet.'));
               }
               return Padding(
                 padding: const EdgeInsets.all(16),
                 child: SafeArea(
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: addedMedicines.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: Checkbox(
-                                  // Take the value from the model
-                                  value: addedMedicines[index].isTaken,
-                                  onChanged: addedMedicines[index].isTaken
-                                      // if value is true return null to greys out the checkbox and prevent the user from unchecking
-                                      ? null
-                                      : (bool? newValue) {
-                                          context.read<HomeBloc>().add(
-                                            MedicineTakenEvent(
-                                              // Send current index to update each tile individually
-                                              index: index,
-                                              // Value after clicking will be sent too
-                                              newValue: newValue ?? false,
-                                            ),
-                                          );
-                                        },
+                  child: ListView(
+                    children: [
+                      // TODAY'S MEDICINES
+                      //! I had to search for this
+                      if (todaysMedicines.isNotEmpty) ...[
+                        const Text(
+                          "Today's Medicines",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Gap(8),
+                        ...todaysMedicines.map(
+                          (medicine) => ListTile(
+                            leading: Checkbox(
+                              value: medicine.isTaken,
+                              onChanged: medicine.isTaken
+                                  // greys out checkbox if value is true
+                                  ? null
+                                  : (bool? newValue) {
+                                      context.read<HomeBloc>().add(
+                                        MedicineTakenEvent(
+                                          medicine: medicine,
+                                          newValue: newValue ?? false,
+                                        ),
+                                      );
+                                    },
+                            ),
+                            title: Row(
+                              children: [
+                                const Icon(Icons.medication, size: 20),
+                                const Gap(8),
+                                Expanded(
+                                  child: Text(
+                                    medicine.brandName,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                                title: Row(
-                                  children: [
-                                    const Icon(Icons.medication, size: 20),
-                                    const Gap(8),
-                                    Text(addedMedicines[index].brandName),
-                                  ],
+                              ],
+                            ),
+                            subtitle: Row(
+                              children: [
+                                const Icon(
+                                  Icons.person_outline_rounded,
+                                  size: 16,
                                 ),
-                                subtitle: Row(
-                                  children: [
-                                    Icon(Icons.person_outline_rounded),
-                                    Gap(8),
-                                    Text(addedMedicines[index].assignedTo),
-                                  ],
+                                const Gap(8),
+                                Text(medicine.assignedTo),
+                              ],
+                            ),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(medicine.time),
+                                Text(medicine.frequency),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Gap(24),
+                      ],
+
+                      // UPCOMING MEDICINES
+                      //! I had to search for this
+                      if (upcomingMedicines.isNotEmpty) ...[
+                        const Text(
+                          "Upcoming Medicines",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const Gap(8),
+                        ...upcomingMedicines.map(
+                          (medicine) => ListTile(
+                            // Checkbox is hidden for upcoming medicines
+                            leading: const SizedBox(width: 40, height: 40),
+                            title: Row(
+                              children: [
+                                const Icon(
+                                  Icons.medication,
+                                  size: 20,
+                                  color: Colors.grey,
                                 ),
-                                trailing: Column(
-                                  children: [
-                                    Text(addedMedicines[index].time),
-                                    Text(addedMedicines[index].frequency),
-                                  ],
+                                const Gap(8),
+                                Expanded(
+                                  child: Text(
+                                    medicine.brandName,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
                                 ),
-                              );
-                            },
+                              ],
+                            ),
+                            subtitle: Row(
+                              children: [
+                                const Icon(
+                                  Icons.person_outline_rounded,
+                                  size: 16,
+                                  color: Colors.grey,
+                                ),
+                                const Gap(8),
+                                Text(
+                                  medicine.assignedTo,
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  medicine.time,
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                                Text(
+                                  medicine.frequency,
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
-                    ),
+                    ],
                   ),
                 ),
               );

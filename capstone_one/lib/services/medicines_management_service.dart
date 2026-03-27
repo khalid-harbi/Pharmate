@@ -76,6 +76,8 @@ class MedicinesManagementService {
     required String assignedTo,
     required String numberOfPills,
     required String frequency,
+    required String? dayOfWeek,
+    required int? dayOfMonth,
   }) async {
     try {
       //! I had to search for this
@@ -96,6 +98,9 @@ class MedicinesManagementService {
         time: timeString,
         frequency: frequency,
         isTaken: false,
+        dayOfWeek: dayOfWeek,
+        dayOfMonth: dayOfMonth,
+        lastResetDate: DateTime.now(),
       );
       addedMedicines.add(newMedicine);
 
