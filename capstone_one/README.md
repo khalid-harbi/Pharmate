@@ -91,7 +91,7 @@ Instead of dealing directly with raw JSON maps throughout the UI, all data fetch
 * **[Go Router](https://pub.dev/packages/go_router)**: Utilized for declarative and robust routing/navigation across the app's various screens (Home, Cabinet, Settings, Details, etc.).
 * **[Get It](https://pub.dev/packages/get_it)**: Used as a Service Locator for Dependency Injection (DI). It manages instances of API clients, repositories, and BLoCs globally.
 * **[Flutter Hooks](https://pub.dev/packages/flutter_hooks)**: Used to cleanly manage local states, such as `TextEditingControllers` for sign in, registration, and medicine search forms.
-* **[FpDart](https://pub.dev/packages/fpdart)**: Introduces functional programming concepts to handle API errors, null safety, and data parsing cleanly (using `Either`, `Option`).
+* **[FpDart](https://pub.dev/packages/fpdart)**: Introduces functional programming concepts to handle API errors, null safety, and data parsing cleanly.
 * **[Any Image View](https://pub.dev/packages/any_image_view)**: Ensures seamless and optimized rendering of various image formats throughout the application.
 * **[Gap](https://pub.dev/packages/gap)**: A simple tool used to create clean, consistent whitespace between UI widgets without relying heavily on `Padding` or `SizedBox`.
 * **[Intl](https://pub.dev/packages/intl)**: Essential for formatting dates and times correctly on the Tracker page.
