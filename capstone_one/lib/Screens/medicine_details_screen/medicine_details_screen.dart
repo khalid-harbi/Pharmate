@@ -1,6 +1,7 @@
 import 'package:capstone_one/Models/medicine_details_model.dart';
 import 'package:capstone_one/core/routes/route_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class MedicineDetailsScreen extends StatelessWidget {
@@ -17,11 +18,15 @@ class MedicineDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Medicine Details', style: TextStyle(fontWeight: .w600)),
+        centerTitle: false,
+      ),
       body: SafeArea(
         child: Center(
           child: Column(
             children: [
+              Gap(32),
               Expanded(
                 child: ListView.builder(
                   // +2 for Brand name and Add button
@@ -30,8 +35,8 @@ class MedicineDetailsScreen extends StatelessWidget {
                     if (index == 0) {
                       return Padding(
                         padding: const EdgeInsets.only(
-                          left: 24,
-                          right: 24,
+                          left: 32,
+                          right: 32,
                           top: 8,
                           bottom: 8,
                         ),
@@ -45,7 +50,7 @@ class MedicineDetailsScreen extends StatelessWidget {
                           ),
                           tileColor: Color(0xFF34495E),
                           title: Padding(
-                            padding: const EdgeInsets.only(bottom: 4),
+                            padding: const EdgeInsets.only(bottom: 8),
                             child: Text(
                               'Brand Name',
                               style: TextStyle(
@@ -54,7 +59,7 @@ class MedicineDetailsScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          contentPadding: EdgeInsets.all(24),
+                          contentPadding: EdgeInsets.all(32),
                           horizontalTitleGap: 16,
                           subtitle: Text(
                             brandName,
@@ -92,8 +97,8 @@ class MedicineDetailsScreen extends StatelessWidget {
                     final item = medicineDetails.availableDetails[index - 1];
                     return Padding(
                       padding: const EdgeInsets.only(
-                        left: 24,
-                        right: 24,
+                        left: 32,
+                        right: 32,
                         top: 8,
                         bottom: 8,
                       ),
@@ -123,7 +128,7 @@ class MedicineDetailsScreen extends StatelessWidget {
                             ? Color.fromARGB(255, 155, 89, 182)
                             : Colors.transparent,
                         title: Padding(
-                          padding: EdgeInsets.only(bottom: 4),
+                          padding: EdgeInsets.only(bottom: 8),
                           child: Text(
                             item['title']!,
                             style: TextStyle(
@@ -132,7 +137,7 @@ class MedicineDetailsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        contentPadding: EdgeInsets.all(24),
+                        contentPadding: EdgeInsets.all(32),
                         horizontalTitleGap: 16,
                         subtitle: Text(
                           item['value']!,

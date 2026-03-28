@@ -4,7 +4,7 @@ class AppThemes {
   //* Define colors
   static const Color _paleGreen = Color(0xFFE4FAD9);
   static const Color _teal = Color(0xFF1DA286);
-  static const Color _darkBlue = Color(0xFF116484);
+  static const Color _darkBlue = Color(0xFF0F3A4C);
   static const Color _lightBlue = Color(0xFFCCE9EA);
   static const Color _iceWhite = Color(0xFFEEF5F9);
   static const Color _deepNavy = Color(0xFF082D3D);
@@ -130,7 +130,7 @@ class AppThemes {
 
     //* inputDecoration
     inputDecorationTheme: InputDecorationTheme(
-      hintStyle: TextStyle(color: _darkBlue.withAlpha(150)),
+      hintStyle: TextStyle(color: _iceWhite.withAlpha(150)),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: _paleGreen),
         borderRadius: BorderRadius.circular(12),

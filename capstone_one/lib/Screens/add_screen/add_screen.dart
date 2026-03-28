@@ -85,15 +85,22 @@ class AddScreen extends HookWidget {
                 key: formKey,
                 child: Column(
                   children: [
-                    Align(
-                      alignment: .center,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          brandName,
-                          textAlign: .center,
-                          style: TextStyle(fontWeight: .bold, fontSize: 24),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.medication_liquid,
+                            size: 32,
+                            color: Colors.redAccent.withAlpha(240),
+                          ),
+                          Gap(8),
+                          Text(
+                            brandName,
+                            textAlign: .center,
+                            style: TextStyle(fontWeight: .bold, fontSize: 24),
+                          ),
+                        ],
                       ),
                     ),
                     Card(
@@ -104,7 +111,10 @@ class AddScreen extends HookWidget {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.search),
+                                Icon(
+                                  Icons.info_outline,
+                                  color: Colors.blueAccent,
+                                ),
                                 Gap(8),
                                 Text(
                                   'Medicine Information',
@@ -116,16 +126,6 @@ class AddScreen extends HookWidget {
                               ],
                             ),
                             Gap(16),
-                            // Align(
-                            //   alignment: .center,
-                            //   child: Text(
-                            //     brandName,
-                            //     style: TextStyle(
-                            //       fontWeight: .bold,
-                            //       fontSize: 24,
-                            //     ),
-                            //   ),
-                            // ),
                             InputFormWidget(
                               title: 'Assigned To',
                               hint: 'Who is taking the pills',
@@ -184,8 +184,8 @@ class AddScreen extends HookWidget {
                                             'Select Time',
                                         style: TextStyle(
                                           color: selectedTime.value == null
-                                              ? Color(0xFF116484).withAlpha(150)
-                                              : Color(0xFF116484),
+                                              ? Colors.grey.withAlpha(150)
+                                              : Colors.grey,
                                           fontSize: 16,
                                         ),
                                       ),

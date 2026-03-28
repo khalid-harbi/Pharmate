@@ -12,6 +12,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Settings', style: TextStyle(fontWeight: .w600)),
         actionsPadding: EdgeInsets.all(16),
         actions: [
           IconButton(

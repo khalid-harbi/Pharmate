@@ -25,7 +25,7 @@ class MainScreen extends StatelessWidget {
 
           // Branch 1
           BottomNavigationBarItem(
-            icon: Icon(Icons.medication),
+            icon: Icon(Icons.local_pharmacy),
             label: 'Cabinet',
           ),
 

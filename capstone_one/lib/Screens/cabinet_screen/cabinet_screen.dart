@@ -2,7 +2,6 @@ import 'package:capstone_one/Models/new_medicine_model.dart';
 import 'package:capstone_one/Screens/home_screen/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 
 class CabinetScreen extends StatelessWidget {
   const CabinetScreen({super.key});
@@ -12,7 +11,9 @@ class CabinetScreen extends StatelessWidget {
     List<NewMedicineModel> addedMedicines;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('My Cabinet', style: TextStyle(fontWeight: .w600)),
+      ),
       // Wrapped with home builder for addedMedicines List refreshing
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
@@ -30,7 +31,7 @@ class CabinetScreen extends StatelessWidget {
                 return const Center(child: Text('No medicines added yet'));
               }
               return Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(32),
                 child: SafeArea(
                   child: Center(
                     child: Column(
@@ -47,13 +48,18 @@ class CabinetScreen extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: Column(
+                                    mainAxisAlignment: .spaceAround,
                                     children: [
+                                      Icon(
+                                        Icons.medication_liquid,
+                                        color: Colors.redAccent.withAlpha(240),
+                                        size: 32,
+                                      ),
                                       Text(
                                         addedMedicines[index].brandName,
                                         textAlign: .center,
                                         style: TextStyle(fontWeight: .bold),
                                       ),
-                                      Gap(8),
                                       Text(
                                         '${addedMedicines[index].numberOfPills} pills left',
                                       ),

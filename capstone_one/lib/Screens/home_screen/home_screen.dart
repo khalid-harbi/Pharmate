@@ -12,7 +12,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('My Medicines', style: TextStyle(fontWeight: .w600)),
+      ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           switch (state) {
@@ -28,7 +30,12 @@ class HomeScreen extends StatelessWidget {
                 return const Center(child: Text('No medicines added yet'));
               }
               return Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  top: 32,
+                  bottom: 24,
+                ),
                 child: SafeArea(
                   child: ListView(
                     children: [
@@ -44,49 +51,52 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const Gap(8),
                         ...todaysMedicines.map(
-                          (medicine) => ListTile(
-                            leading: Checkbox(
-                              value: medicine.isTaken,
-                              onChanged: medicine.isTaken
-                                  // greys out checkbox if value is true
-                                  ? null
-                                  : (bool? newValue) {
-                                      context.read<HomeBloc>().add(
-                                        MedicineTakenEvent(
-                                          medicine: medicine,
-                                          newValue: newValue ?? false,
-                                        ),
-                                      );
-                                    },
-                            ),
-                            title: Row(
-                              children: [
-                                const Icon(Icons.medication, size: 20),
-                                const Gap(8),
-                                Expanded(
-                                  child: Text(
-                                    medicine.brandName,
-                                    overflow: TextOverflow.ellipsis,
+                          (medicine) => Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: ListTile(
+                              leading: Checkbox(
+                                value: medicine.isTaken,
+                                onChanged: medicine.isTaken
+                                    // greys out checkbox if value is true
+                                    ? null
+                                    : (bool? newValue) {
+                                        context.read<HomeBloc>().add(
+                                          MedicineTakenEvent(
+                                            medicine: medicine,
+                                            newValue: newValue ?? false,
+                                          ),
+                                        );
+                                      },
+                              ),
+                              title: Row(
+                                children: [
+                                  const Icon(Icons.medication, size: 20),
+                                  const Gap(8),
+                                  Expanded(
+                                    child: Text(
+                                      medicine.brandName,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            subtitle: Row(
-                              children: [
-                                const Icon(
-                                  Icons.person_outline_rounded,
-                                  size: 16,
-                                ),
-                                const Gap(8),
-                                Text(medicine.assignedTo),
-                              ],
-                            ),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(medicine.time),
-                                Text(medicine.frequency),
-                              ],
+                                ],
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.person_outline_rounded,
+                                    size: 16,
+                                  ),
+                                  const Gap(8),
+                                  Text(medicine.assignedTo),
+                                ],
+                              ),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(medicine.time),
+                                  Text(medicine.frequency),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -106,52 +116,57 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const Gap(8),
                         ...upcomingMedicines.map(
-                          (medicine) => ListTile(
-                            // Checkbox is hidden for upcoming medicines
-                            leading: const SizedBox(width: 40, height: 40),
-                            title: Row(
-                              children: [
-                                const Icon(
-                                  Icons.medication,
-                                  size: 20,
-                                  color: Colors.grey,
-                                ),
-                                const Gap(8),
-                                Expanded(
-                                  child: Text(
-                                    medicine.brandName,
-                                    overflow: TextOverflow.ellipsis,
+                          (medicine) => Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: ListTile(
+                              // Checkbox is hidden for upcoming medicines
+                              leading: const SizedBox(width: 40, height: 40),
+                              title: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.medication,
+                                    size: 20,
+                                    color: Colors.grey,
+                                  ),
+                                  const Gap(8),
+                                  Expanded(
+                                    child: Text(
+                                      medicine.brandName,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.person_outline_rounded,
+                                    size: 16,
+                                    color: Colors.grey,
+                                  ),
+                                  const Gap(8),
+                                  Text(
+                                    medicine.assignedTo,
                                     style: const TextStyle(color: Colors.grey),
                                   ),
-                                ),
-                              ],
-                            ),
-                            subtitle: Row(
-                              children: [
-                                const Icon(
-                                  Icons.person_outline_rounded,
-                                  size: 16,
-                                  color: Colors.grey,
-                                ),
-                                const Gap(8),
-                                Text(
-                                  medicine.assignedTo,
-                                  style: const TextStyle(color: Colors.grey),
-                                ),
-                              ],
-                            ),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  medicine.time,
-                                  style: const TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  medicine.frequency,
-                                  style: const TextStyle(color: Colors.grey),
-                                ),
-                              ],
+                                ],
+                              ),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    medicine.time,
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                  Text(
+                                    medicine.frequency,
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -119,7 +119,7 @@ class SearchScreen extends HookWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: InputFormWidget(
-                            title: 'Medicine name',
+                            title: 'Medicine Name',
                             hint: 'Enter Medicine name',
                             controller: searchController,
                           ),
@@ -177,7 +177,13 @@ class SearchScreen extends HookWidget {
                             },
                           );
                         }
-                        return Center(child: null);
+                        return Center(
+                          child: Icon(
+                            Icons.search,
+                            size: 250,
+                            color: Colors.grey.withAlpha(100),
+                          ),
+                        );
                       },
                     ),
                   ),
