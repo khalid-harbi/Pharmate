@@ -43,23 +43,29 @@ class ForgotPasswordScreen extends HookWidget {
             case SuccessState _:
               showDialog(
                 context: context,
-                builder: (context) => Center(
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Text(state.message),
-                  ),
+                builder: (context) => AlertDialog(
+                  title: Text('Succeeded'),
+                  content: Text(state.message),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK'),
+                    ),
+                  ],
                 ),
               );
             case ErrorState _:
               showDialog(
                 context: context,
-                builder: (context) => Center(
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Text(state.message),
-                  ),
+                builder: (context) => AlertDialog(
+                  title: Text('Failed'),
+                  content: Text(state.message),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK'),
+                    ),
+                  ],
                 ),
               );
           }

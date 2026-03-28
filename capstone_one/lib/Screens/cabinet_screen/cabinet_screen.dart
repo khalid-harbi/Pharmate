@@ -27,7 +27,7 @@ class CabinetScreen extends StatelessWidget {
                 ...state.upcomingMedicines,
               ];
               if (addedMedicines.isEmpty) {
-                return const Center(child: Text('No medicines added yet.'));
+                return const Center(child: Text('No medicines added yet'));
               }
               return Padding(
                 padding: const EdgeInsets.all(16),

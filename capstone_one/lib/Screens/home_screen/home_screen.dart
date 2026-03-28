@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                   state.upcomingMedicines;
 
               if (todaysMedicines.isEmpty && upcomingMedicines.isEmpty) {
-                return const Center(child: Text('No medicines added yet.'));
+                return const Center(child: Text('No medicines added yet'));
               }
               return Padding(
                 padding: const EdgeInsets.all(16),

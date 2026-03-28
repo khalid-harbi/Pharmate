@@ -31,7 +31,7 @@ class SignInScreen extends HookWidget {
       // Purpose: React to state changes without rebuilding UI
       body: BlocListener<SignInBloc, SignInState>(
         listener: (context, state) {
-          // To handle loadingIndicator
+          // To handle (hide) loadingIndicator
           if (loadingKey.currentContext != null &&
               // .mounted means triggered currently on the screen
               loadingKey.currentContext!.mounted) {
@@ -57,12 +57,15 @@ class SignInScreen extends HookWidget {
             case ErrorState _:
               showDialog(
                 context: context,
-                builder: (context) => Center(
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Text(state.message),
-                  ),
+                builder: (context) => AlertDialog(
+                  title: Text('Failed'),
+                  content: Text(state.message),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK'),
+                    ),
+                  ],
                 ),
               );
           }

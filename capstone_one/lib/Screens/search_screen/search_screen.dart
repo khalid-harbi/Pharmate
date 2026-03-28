@@ -55,12 +55,15 @@ class SearchScreen extends HookWidget {
             case MedicinesLoadingFailedState _:
               showDialog(
                 context: context,
-                builder: (context) => Center(
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Text(state.message),
-                  ),
+                builder: (context) => AlertDialog(
+                  title: Text('Failed'),
+                  content: Text(state.message),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK'),
+                    ),
+                  ],
                 ),
               );
             case MedicineDetailsLoadingState _:
@@ -75,6 +78,7 @@ class SearchScreen extends HookWidget {
             case MedicineDetailsSuccessfulState _:
               context.push(
                 RouteKeys.medicineDetailsScreen,
+
                 // Pass more than one extra as a map
                 extra: {
                   'details': state.medicineDetails,
@@ -85,12 +89,15 @@ class SearchScreen extends HookWidget {
             case MedicineDetailsFailedState _:
               showDialog(
                 context: context,
-                builder: (context) => Center(
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Text(state.message),
-                  ),
+                builder: (context) => AlertDialog(
+                  title: Text('Failed'),
+                  content: Text(state.message),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK'),
+                    ),
+                  ],
                 ),
               );
               break;
@@ -102,9 +109,10 @@ class SearchScreen extends HookWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+                  Gap(32),
                   SizedBox(
                     width: 400,
-                    height: 220,
+                    height: 180,
                     child: Form(
                       key: formKey,
                       child: Card(
@@ -119,7 +127,7 @@ class SearchScreen extends HookWidget {
                       ),
                     ),
                   ),
-                  Gap(8),
+                  Gap(16),
 
                   // ---------------------------
                   // ---------------------------
@@ -147,20 +155,24 @@ class SearchScreen extends HookWidget {
                           return ListView.builder(
                             itemCount: state.medicines.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: Icon(Icons.medication),
+                              return Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: ListTile(
+                                  leading: Icon(Icons.medication),
+                                  trailing: Icon(Icons.arrow_forward_ios),
 
-                                onTap: () async {
-                                  selectedBrandName.value =
-                                      state.medicines[index].brandName;
-                                  context.read<SearchBloc>().add(
-                                    DetailsRequestEvent(
-                                      brandName:
-                                          state.medicines[index].brandName,
-                                    ),
-                                  );
-                                },
-                                title: Text(state.medicines[index].brandName),
+                                  onTap: () async {
+                                    selectedBrandName.value =
+                                        state.medicines[index].brandName;
+                                    context.read<SearchBloc>().add(
+                                      DetailsRequestEvent(
+                                        brandName:
+                                            state.medicines[index].brandName,
+                                      ),
+                                    );
+                                  },
+                                  title: Text(state.medicines[index].brandName),
+                                ),
                               );
                             },
                           );

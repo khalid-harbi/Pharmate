@@ -71,6 +71,20 @@ class AppThemes {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
+
+    //* listTile
+    listTileTheme: ListTileThemeData(
+      tileColor: Colors.white,
+      iconColor: _teal,
+      textColor: _darkBlue,
+      titleTextStyle: TextStyle(
+        color: _darkBlue,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
+      subtitleTextStyle: TextStyle(color: _darkBlue, fontSize: 14),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
   );
 
   //------------------------------------
@@ -137,6 +151,20 @@ class AppThemes {
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
+    ),
+
+    //* listTile
+    listTileTheme: ListTileThemeData(
+      tileColor: _darkBlue,
+      iconColor: _paleGreen,
+      textColor: _iceWhite,
+      titleTextStyle: TextStyle(
+        color: _iceWhite,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
+      subtitleTextStyle: TextStyle(color: _iceWhite, fontSize: 14),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
   );
 }
