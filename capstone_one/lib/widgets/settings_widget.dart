@@ -19,6 +19,7 @@ class SettingsWidget extends StatelessWidget {
           leading: Icon(icon),
           title: Text(title),
           trailing: Icon(Icons.arrow_forward_ios),
+          onTap: () {},
         ),
       ),
     );

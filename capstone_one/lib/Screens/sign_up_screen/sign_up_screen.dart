@@ -59,7 +59,7 @@ class SignUpScreen extends HookWidget {
                   content: Text(state.message),
                   actions: [
                     TextButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => context.go(RouteKeys.signInScreen),
                       child: Text('OK'),
                     ),
                   ],

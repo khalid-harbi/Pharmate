@@ -16,11 +16,20 @@ class SettingsScreen extends StatelessWidget {
         title: Text('Settings', style: TextStyle(fontWeight: .w600)),
         actionsPadding: EdgeInsets.all(16),
         actions: [
-          IconButton(
-            onPressed: () {
-              context.go(RouteKeys.signInScreen);
+          // BlocBuilder to get themeData.brightness value
+          BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, state) {
+              final isDarkMode = state.themeData.brightness == Brightness.dark;
+              return IconButton(
+                onPressed: () {
+                  //! Theme #1
+                  // We can access ThemeBloc anywhere because we wrapped
+                  // the whole app with BlocProvider
+                  context.read<ThemeBloc>().add(ToggleThemeEvent());
+                },
+                icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
+              );
             },
-            icon: Icon(Icons.logout, color: Colors.redAccent),
           ),
         ],
       ),
@@ -45,29 +54,19 @@ class SettingsScreen extends StatelessWidget {
                   title: 'Help & Support',
                 ),
                 SettingsWidget(icon: Icons.help_outline, title: 'About'),
-
-                // BlocBuilder to get themeData.brightness value
-                BlocBuilder<ThemeBloc, ThemeState>(
-                  builder: (context, state) {
-                    final isDarkMode =
-                        state.themeData.brightness == Brightness.dark;
-                    return Row(
-                      mainAxisAlignment: .center,
-                      children: [
-                        Switch(
-                          value: isDarkMode,
-                          onChanged: (value) {
-                            //! Theme #1
-                            // We can access ThemeBloc anywhere because we wrapped
-                            // the whole app with BlocProvider
-                            context.read<ThemeBloc>().add(ToggleThemeEvent());
-                          },
-                        ),
-                        Gap(8),
-                        Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
-                      ],
-                    );
+                Gap(52),
+                TextButton(
+                  onPressed: () {
+                    context.go(RouteKeys.signInScreen);
                   },
+                  child: Text(
+                    'Sign out',
+                    style: TextStyle(
+                      color: Colors.redAccent,
+                      fontWeight: .w500,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
               ],
             ),

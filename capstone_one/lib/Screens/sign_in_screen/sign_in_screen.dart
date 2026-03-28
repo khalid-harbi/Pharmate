@@ -14,8 +14,8 @@ class SignInScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     //TODO: remove 123 later
-    final emailController = useTextEditingController(text: '123@gmail.com');
-    final passwordController = useTextEditingController(text: '123');
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
     // To handle loadingIndicator
     final loadingKey = GlobalKey();
 
