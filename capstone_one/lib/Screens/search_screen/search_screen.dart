@@ -112,17 +112,37 @@ class SearchScreen extends HookWidget {
                   Gap(32),
                   SizedBox(
                     width: 400,
-                    height: 180,
+                    height: 240,
                     child: Form(
                       key: formKey,
                       child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: InputFormWidget(
-                            title: 'Medicine Name',
-                            hint: 'Enter Medicine name',
-                            controller: searchController,
-                          ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: InputFormWidget(
+                                title: 'Medicine Name',
+                                hint: 'Enter Medicine name',
+                                controller: searchController,
+                              ),
+                            ),
+                            FilledButton(
+                              onPressed: () async {
+                                if (formKey.currentState!.validate()) {
+                                  context.read<SearchBloc>().add(
+                                    //! Send controller value #1
+                                    SearchRequestEvent(
+                                      searchText: searchController.text,
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Search',
+                                style: TextStyle(fontWeight: .bold),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -131,17 +151,17 @@ class SearchScreen extends HookWidget {
 
                   // ---------------------------
                   // ---------------------------
-                  FilledButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        context.read<SearchBloc>().add(
-                          //! Send controller value #1
-                          SearchRequestEvent(searchText: searchController.text),
-                        );
-                      }
-                    },
-                    child: Text('Search', style: TextStyle(fontWeight: .bold)),
-                  ),
+                  // FilledButton(
+                  //   onPressed: () async {
+                  //     if (formKey.currentState!.validate()) {
+                  //       context.read<SearchBloc>().add(
+                  //         //! Send controller value #1
+                  //         SearchRequestEvent(searchText: searchController.text),
+                  //       );
+                  //     }
+                  //   },
+                  //   child: Text('Search', style: TextStyle(fontWeight: .bold)),
+                  // ),
                   Gap(16),
                   Expanded(
                     child: BlocBuilder<SearchBloc, SearchState>(
