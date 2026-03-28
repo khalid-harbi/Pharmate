@@ -39,8 +39,8 @@
     <td><img src="https://github.com/user-attachments/assets/b58e1b5d-c64f-4a5f-bfaa-d5be0b7f0a60" width="250" alt="Forgot Password"/></td>
   </tr>
   <tr>
-    <td align="center"><b>My Medicines (Tracker)</b></td>
-    <td align="center"><b>My Cabinet (Inventory)</b></td>
+    <td align="center"><b>My Medicines</b></td>
+    <td align="center"><b>My Cabinet</b></td>
     <td align="center"><b>Add New Medicine</b></td>
   </tr>
   <tr>
@@ -81,8 +81,8 @@
 
 This project is built using modern Flutter development practices to ensure scalability, maintainability, and top-tier performance.
 
-### Core Data Handling (OpenFDA API)
-Instead of dealing directly with raw JSON maps throughout the UI, all data fetched from the `https://open.fda.gov/apis/` endpoint is strictly serialized into robust **Dart Models (Objects)**. This ensures type safety, prevents null errors, and makes the UI code cleaner when displaying complex details like *Usage*, *Purpose*, and *Active Ingredients*.
+### Core Data Handling
+Instead of dealing directly with raw JSON maps throughout the UI, all data fetched from the `https://open.fda.gov/apis/` endpoint is strictly serialized into robust **Dart Models (Objects)**. This ensures type safety, prevents null errors, and makes the UI code cleaner when displaying complex details.
 
 ### Packages Used
 
@@ -90,7 +90,7 @@ Instead of dealing directly with raw JSON maps throughout the UI, all data fetch
 * **[Dio](https://pub.dev/packages/dio)**: A powerful HTTP client for Dart used to handle network requests to the OpenFDA API efficiently.
 * **[Go Router](https://pub.dev/packages/go_router)**: Utilized for declarative and robust routing/navigation across the app's various screens (Home, Cabinet, Settings, Details, etc.).
 * **[Get It](https://pub.dev/packages/get_it)**: Used as a Service Locator for Dependency Injection (DI). It manages instances of API clients, repositories, and BLoCs globally.
-* **[Flutter Hooks](https://pub.dev/packages/flutter_hooks)**: Replaces `StatefulWidget` boilerplate. Used to cleanly manage local states, such as `TextEditingControllers` for login, registration, and medicine search forms.
+* **[Flutter Hooks](https://pub.dev/packages/flutter_hooks)**: Used to cleanly manage local states, such as `TextEditingControllers` for sign in, registration, and medicine search forms.
 * **[FpDart](https://pub.dev/packages/fpdart)**: Introduces functional programming concepts to handle API errors, null safety, and data parsing cleanly (using `Either`, `Option`).
 * **[Any Image View](https://pub.dev/packages/any_image_view)**: Ensures seamless and optimized rendering of various image formats throughout the application.
 * **[Gap](https://pub.dev/packages/gap)**: A simple tool used to create clean, consistent whitespace between UI widgets without relying heavily on `Padding` or `SizedBox`.
