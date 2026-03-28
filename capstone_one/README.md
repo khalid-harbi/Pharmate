@@ -4,7 +4,7 @@
   <img src="https://github.com/user-attachments/assets/43384b67-8e0e-430b-b888-f19c70f0ad06" alt="Pharmate Logo" width="60" style="border-radius: 12px; object-fit: cover; height: 60px; object-position: top center;"/>
   
   <h1>💊 Pharmate</h1>
-  <p><strong>Your Personal Medicine Tracker & Pill Inventory Manager</strong></p>
+  <p><strong>Your reliable partner in health and medicine management.</strong></p>
   <p>Built with Flutter, featuring OpenFDA API integration for comprehensive medicine guides.</p>
   <br />
 </div>
