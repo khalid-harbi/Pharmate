@@ -88,7 +88,7 @@ Instead of dealing directly with raw JSON maps throughout the UI, all data fetch
 
 * **[Flutter BLoC](https://pub.dev/packages/flutter_bloc)**: The core state management solution used to separate business logic from the UI. It powers the dynamic updates in the Tracker, Cabinet inventory changes, and API fetching states.
 * **[Dio](https://pub.dev/packages/dio)**: A powerful HTTP client for Dart used to handle network requests to the OpenFDA API efficiently.
-* **[Go Router](https://pub.dev/packages/go_router)**: Utilized for declarative and robust routing/navigation across the app's various screens (Home, Cabinet, Settings, Details, etc.).
+* **[Go Router](https://pub.dev/packages/go_router)**: Utilized for declarative and robust routing/navigation across the app's various screens.
 * **[Get It](https://pub.dev/packages/get_it)**: Used as a Service Locator for Dependency Injection (DI). It manages instances of API clients, repositories, and BLoCs globally.
 * **[Flutter Hooks](https://pub.dev/packages/flutter_hooks)**: Used to cleanly manage local states, such as `TextEditingControllers` for sign in, registration, and medicine search forms.
 * **[FpDart](https://pub.dev/packages/fpdart)**: Introduces functional programming concepts to handle API errors, null safety, and data parsing cleanly.
