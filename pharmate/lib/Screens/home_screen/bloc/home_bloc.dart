@@ -27,6 +27,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         bool shouldReset = false;
 
         // Check if we already reset today
+        // to prevent resetting the same medicine multiple times in a single day
+        // hasTimePassed is not enough
         bool alreadyResetToday =
             medicine.lastResetDate != null &&
             medicine.lastResetDate!.year == now.year &&
@@ -34,11 +36,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             medicine.lastResetDate!.day == now.day;
 
         // 1. Time Parsing Logic
+        // DateFormat("hh:mm a") can read this time 11:05 AM format
+        // parse() converts that string into a DateTime object
         final parsedTime = DateFormat("hh:mm a").parse(medicine.time);
 
         // 2. Convert both to total minutes since midnight for easy comparison
         final medicineTimeInMinutes =
             (parsedTime.hour * 60) + parsedTime.minute;
+
         final nowInMinutes = (now.hour * 60) + now.minute;
 
         // 3. True if the current time is exactly at, or past, the reminder time
@@ -52,6 +57,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
         // Weekly Logic
         else if (medicine.frequency == 'Weekly') {
+          // DateFormat('EEEE') is the day of the week as a string
           String todayString = DateFormat('EEEE').format(now);
           if (todayString == medicine.dayOfWeek &&
               !alreadyResetToday &&
@@ -74,10 +80,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       }
 
+      // ----------------------------------------------------------
+      // ----------------------------------------------------------
+
       // Sorting Logic
       List<NewMedicineModel> todaysList = [];
       List<NewMedicineModel> upcomingList = [];
 
+      // DateFormat('EEEE') is the day of the week as a string
       final String todayString = DateFormat('EEEE').format(now);
       final int todayDate = now.day;
       for (var medicine in addedMedicines) {
@@ -101,6 +111,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
       emit(
         LoadAddedMedicinesState(
+          // List.from to create a copy for safe use
           todaysMedicines: List.from(todaysList),
           upcomingMedicines: List.from(upcomingList),
         ),

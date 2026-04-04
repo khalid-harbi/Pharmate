@@ -1,6 +1,7 @@
 import 'package:capstone_one/Screens/add_screen/bloc/add_bloc.dart';
 import 'package:capstone_one/Screens/home_screen/bloc/home_bloc.dart';
 import 'package:capstone_one/core/routes/route_keys.dart';
+import 'package:capstone_one/core/themes/bloc/theme_bloc.dart';
 import 'package:capstone_one/widgets/input_form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,16 +18,17 @@ class AddScreen extends HookWidget {
     final assignedToController = useTextEditingController();
     final numberOfPillsController = useTextEditingController();
 
-    // To save Time and Frequency values
-    final selectedTime = useState<TimeOfDay?>(null);
+    // To save Time and Frequency values, doesn't get removed with UI rebuild
+    // values are needed to be saved to display them on UI
+    final selectedTime = useState<TimeOfDay?>(TimeOfDay.now());
     final selectedFrequency = useState<String>('Daily');
 
-    // NEW: State variables to hold the specific reset days
+    // State variables to hold the specific reset days
     final selectedDayOfWeek = useState<String>('Sunday');
     final selectedDayOfMonth = useState<int>(1);
 
     final formKey = useMemoized(() => GlobalKey<FormState>());
-    final loadingKey = useMemoized(() => GlobalKey());
+    final loadingKey = GlobalKey();
 
     return Scaffold(
       appBar: AppBar(
@@ -143,7 +145,6 @@ class AddScreen extends HookWidget {
                                 style: TextStyle(fontWeight: .bold),
                               ),
                             ),
-                            //! I had to search for this
                             Padding(
                               padding: const EdgeInsets.only(
                                 left: 16,
@@ -151,6 +152,7 @@ class AddScreen extends HookWidget {
                                 top: 8,
                                 bottom: 16,
                               ),
+                              //! I had to search for this
                               child: InkWell(
                                 // async because TimeOfDay is Future
                                 onTap: () async {
@@ -159,10 +161,10 @@ class AddScreen extends HookWidget {
                                     initialTime:
                                         selectedTime.value ?? TimeOfDay.now(),
                                   );
-                                  if (time != null) {
-                                    selectedTime.value = time;
-                                  }
+                                  selectedTime.value = time;
                                 },
+
+                                // Match other fields style
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 12,
@@ -179,15 +181,21 @@ class AddScreen extends HookWidget {
                                     // Icon at the end right
                                     mainAxisAlignment: .spaceBetween,
                                     children: [
-                                      Text(
-                                        selectedTime.value?.format(context) ??
-                                            'Select Time',
-                                        style: TextStyle(
-                                          color: selectedTime.value == null
-                                              ? Colors.grey.withAlpha(150)
-                                              : Colors.grey,
-                                          fontSize: 16,
-                                        ),
+                                      BlocBuilder<ThemeBloc, ThemeState>(
+                                        builder: (context, state) {
+                                          return Text(
+                                            // display time in proper format
+                                            selectedTime.value!.format(context),
+                                            style: TextStyle(
+                                              color:
+                                                  state.themeData.brightness ==
+                                                      Brightness.light
+                                                  ? Color(0xFF0F3A4C)
+                                                  : Color(0xFFEEF5F9),
+                                              fontSize: 16,
+                                            ),
+                                          );
+                                        },
                                       ),
                                       const Icon(
                                         Icons.access_time,
@@ -206,6 +214,7 @@ class AddScreen extends HookWidget {
                                 style: TextStyle(fontWeight: .bold),
                               ),
                             ),
+
                             //! I had to search for this
                             Padding(
                               padding: const EdgeInsets.only(
@@ -214,20 +223,25 @@ class AddScreen extends HookWidget {
                                 top: 8,
                                 bottom: 16,
                               ),
+
+                              // Dropdown field input
                               child: DropdownButtonFormField<String>(
                                 initialValue: selectedFrequency.value,
                                 icon: Padding(
                                   padding: EdgeInsets.only(right: 16),
                                   child: Icon(Icons.arrow_drop_down),
                                 ),
-                                items: ['Daily', 'Weekly', 'Monthly'].map((
-                                  String value,
-                                ) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
+
+                                // loop through Dropdown field values and creates and option for each
+                                items: ['Daily', 'Weekly', 'Monthly'].map(
+                                  (String value) {
+                                    // One option inside the dropdown list
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  },
+                                ).toList(), // items parameter expects a list of items
                                 onChanged: (newValue) {
                                   if (newValue != null) {
                                     selectedFrequency.value = newValue;
@@ -238,6 +252,8 @@ class AddScreen extends HookWidget {
 
                             //! I had to search for this
                             // Conditional UI for Weekly
+                            // ... [ ] means if the condition is true
+                            // add the widgets inside the list to the column
                             if (selectedFrequency.value == 'Weekly') ...[
                               const Gap(16),
                               Padding(
@@ -257,6 +273,10 @@ class AddScreen extends HookWidget {
                                 ),
                                 child: DropdownButtonFormField<String>(
                                   initialValue: selectedDayOfWeek.value,
+                                  icon: Padding(
+                                    padding: EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.arrow_drop_down),
+                                  ),
                                   items:
                                       [
                                             'Sunday',
@@ -285,6 +305,8 @@ class AddScreen extends HookWidget {
 
                             //! I had to search for this
                             // Conditional UI for Monthly
+                            // ... [] means if the condition is true
+                            // add the widgets inside the list to the column
                             if (selectedFrequency.value == 'Monthly') ...[
                               Gap(16),
                               Padding(
@@ -304,7 +326,12 @@ class AddScreen extends HookWidget {
                                 ),
                                 child: DropdownButtonFormField<int>(
                                   initialValue: selectedDayOfMonth.value,
+                                  icon: Padding(
+                                    padding: EdgeInsets.only(right: 16),
+                                    child: Icon(Icons.arrow_drop_down),
+                                  ),
                                   // Generates numbers 1 through 31
+                                  // 31 is the length , value is index + 1
                                   items: List.generate(31, (index) => index + 1)
                                       .map(
                                         (day) => DropdownMenuItem(
@@ -325,6 +352,7 @@ class AddScreen extends HookWidget {
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.all(24),
                       child: FilledButton(
@@ -337,17 +365,6 @@ class AddScreen extends HookWidget {
                         ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            //! I had to search for this
-                            if (selectedTime.value == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Please select a reminder time',
-                                  ),
-                                ),
-                              );
-                              return;
-                            }
                             context.read<AddBloc>().add(
                               AddMedicineEvent(
                                 brandName: brandName,

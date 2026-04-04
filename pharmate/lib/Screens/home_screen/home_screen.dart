@@ -39,17 +39,20 @@ class HomeScreen extends StatelessWidget {
                 child: SafeArea(
                   child: ListView(
                     children: [
-                      // TODAY'S MEDICINES
                       //! I had to search for this
+                      // TODAY'S MEDICINES
+                      // ... [ ] means if the condition is true
+                      // add the widgets inside the list to the column
                       if (todaysMedicines.isNotEmpty) ...[
-                        const Text(
+                        Text(
                           "Today's Medicines",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Gap(8),
+                        Gap(8),
+                        // ... spreads each widget from that iterable into the Column children.
                         ...todaysMedicines.map(
                           (medicine) => Padding(
                             padding: const EdgeInsets.all(8),

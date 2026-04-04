@@ -14,6 +14,7 @@ class CabinetScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Cabinet', style: TextStyle(fontWeight: .w600)),
       ),
+
       // Wrapped with home builder for addedMedicines List refreshing
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
@@ -21,7 +22,6 @@ class CabinetScreen extends StatelessWidget {
             case HomeInitial _:
               break;
             case LoadAddedMedicinesState _:
-
               // Merge two lists
               addedMedicines = [
                 ...state.todaysMedicines,

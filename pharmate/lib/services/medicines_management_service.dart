@@ -14,14 +14,6 @@ class MedicinesManagementService {
   // ---------------------
   // ---------------------
   // ---------------------
-
-  void addNewMedicine(NewMedicineModel medicine) {
-    addedMedicines.add(medicine);
-  }
-
-  // ---------------------
-  // ---------------------
-  // ---------------------
   //~ #6
   Future<Either<String, List<MedicineModel>>> search({
     required String searchText,
@@ -87,11 +79,12 @@ class MedicinesManagementService {
       // Format TimeOfDay to a String for easier storage/notifications
       final hour = selectedTime.value!.hour;
       final minute = selectedTime.value!.minute;
-
       final period = hour >= 12 ? 'PM' : 'AM';
+      // 24 to 12 format
       final hour12 = hour % 12 == 0 ? 12 : hour % 12;
 
       final timeString =
+          // padLeft ensures the time is 2 characters long by adding 0 to the left
           '${hour12.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')} $period';
 
       final NewMedicineModel newMedicine = NewMedicineModel(
@@ -103,6 +96,8 @@ class MedicinesManagementService {
         isTaken: false,
         dayOfWeek: dayOfWeek,
         dayOfMonth: dayOfMonth,
+        // Change to null for testing
+        // if null, it will reset the checkbox even in the same day
         lastResetDate: DateTime.now(),
       );
       addedMedicines.add(newMedicine);

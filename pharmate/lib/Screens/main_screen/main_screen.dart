@@ -1,4 +1,6 @@
+import 'package:capstone_one/Screens/home_screen/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class MainScreen extends StatelessWidget {
@@ -8,36 +10,42 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Displays the current tab screen
-      body: navigationShell,
-      bottomNavigationBar: BottomNavigationBar(
-        // Highlights the active tab
-        // Branch index is used for highlighting and tab switching
-        currentIndex: navigationShell.currentIndex,
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return Scaffold(
+          // Displays the current tab screen
+          body: navigationShell,
+          bottomNavigationBar: BottomNavigationBar(
+            // Highlights the active tab
+            // Branch index is used for highlighting and tab switching
+            currentIndex: navigationShell.currentIndex,
 
-        // Pass the index (branch) of the tapped item for switching
-        onTap: (index) {
-          navigationShell.goBranch(index);
-        },
+            // Pass the index (branch) of the tapped item for switching
+            onTap: (index) {
+              navigationShell.goBranch(index);
+              // Refresh the AddedMedicines checkbox
+              context.read<HomeBloc>().add(LoadAddedMedicinesEvent());
+            },
 
-        items: [
-          // Branch 0
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            items: [
+              // Branch 0
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
 
-          // Branch 1
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_pharmacy),
-            label: 'Cabinet',
+              // Branch 1
+              BottomNavigationBarItem(
+                icon: Icon(Icons.local_pharmacy),
+                label: 'Cabinet',
+              ),
+
+              // Branch 2
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
+            ],
           ),
-
-          // Branch 2
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

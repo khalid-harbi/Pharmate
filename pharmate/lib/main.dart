@@ -5,11 +5,12 @@ import 'package:capstone_one/core/themes/bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+void main() async {
   // Required if there are any running code before runApp()
   WidgetsFlutterBinding.ensureInitialized();
   // This runs GetIt setup
   Configuration.configureDependencies();
+
   runApp(
     // Purpose: Provide or Create the bloc
     // More than one provider using Multi

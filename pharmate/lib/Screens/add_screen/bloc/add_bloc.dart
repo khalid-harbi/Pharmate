@@ -11,7 +11,6 @@ class AddBloc extends Bloc<AddEvent, AddState> {
   final MedicinesManagementService medicineService;
 
   AddBloc({required this.medicineService}) : super(AddInitial()) {
-    on<AddEvent>((event, emit) {});
     on<AddMedicineEvent>(addMethod);
   }
 
