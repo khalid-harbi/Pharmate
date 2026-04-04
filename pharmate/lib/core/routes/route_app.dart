@@ -35,7 +35,7 @@ class RouteApp {
       // Keeps every tab state in memory
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          // navigationShell manages tab switching and state
+          // navigationShell manages tab switching and state like a controller
           // Starts with holding Branch 0
           return MainScreen(navigationShell: navigationShell);
         },
@@ -43,7 +43,7 @@ class RouteApp {
         // -------------------------
         // -------------------------
         branches: [
-          // Branch 0
+          // Index branch 0
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -55,7 +55,7 @@ class RouteApp {
             ],
           ),
 
-          // Branch 1
+          // Index branch 1
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -67,7 +67,7 @@ class RouteApp {
             ],
           ),
 
-          // Branch 2
+          // Index branch 2
           StatefulShellBranch(
             routes: [
               GoRoute(

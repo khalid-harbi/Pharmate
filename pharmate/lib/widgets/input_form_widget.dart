@@ -31,7 +31,7 @@ class InputFormWidget extends StatelessWidget {
           Gap(8),
           TextFormField(
             // Only apply this check if this is a password field
-            obscureText: title.contains('Password'),
+            obscureText: title.contains('Password') ? true : false,
 
             // Only apply this check if this is an Email field
             keyboardType: title == 'Email'
@@ -42,18 +42,23 @@ class InputFormWidget extends StatelessWidget {
 
             inputFormatters: title == 'Number of Pills'
                 ? [FilteringTextInputFormatter.digitsOnly]
-                : [],
+                : [], // none
 
             controller: controller,
 
             // Display red validation text
+            // Call validator automatically only when the user modifies the field
             autovalidateMode: AutovalidateMode.onUserInteraction,
+
+            // value refers to the input text value
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return '$title is required';
               }
+
               // Only apply this check if this is an Email field
               if (title == 'Email') {
+                // hasMatch returns true if the string value matches the regex pattern
                 if (!emailRegex.hasMatch(value)) {
                   return 'Invalid email format (e.g., name@example.com)';
                 }
@@ -71,6 +76,8 @@ class InputFormWidget extends StatelessWidget {
               border: OutlineInputBorder(),
               hintText: hint,
             ),
+
+            // dismiss the keyboard when the user taps outside the text field
             onTapOutside: (value) {
               FocusManager.instance.primaryFocus?.unfocus();
             },

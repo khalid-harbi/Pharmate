@@ -19,6 +19,7 @@ class SettingsScreen extends StatelessWidget {
           // BlocBuilder to get themeData.brightness value
           BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) {
+              // for icon switch
               final isDarkMode = state.themeData.brightness == Brightness.dark;
               return IconButton(
                 onPressed: () {

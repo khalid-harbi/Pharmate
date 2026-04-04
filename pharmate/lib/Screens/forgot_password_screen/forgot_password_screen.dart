@@ -15,8 +15,19 @@ class ForgotPasswordScreen extends HookWidget {
     final emailController = useTextEditingController();
     final loadingKey = GlobalKey();
 
+    //! I had to search for this
+    // useMemoized so the key doesn't get destroyed (changed) with every rebuild
+    // Remember and save the unique formKey
+    // If the screen rebuilds and the key changes, the new form starts completely fresh
+    // The red error text will vanish, even if the user hasn't fixed the format yet
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+
     return Scaffold(
       appBar: AppBar(),
+      // Purpose: React to state changes without rebuilding UI
+      // Trigger actions (side effects) without rebuilding UI
+      // Used here for pop loading, showDialog, navigation
+      // BlocListener can't return UI widgets
       body: BlocListener<ForgotPasswordBloc, ForgotPasswordState>(
         listener: (context, state) {
           // To handle loadingIndicator
@@ -33,7 +44,9 @@ class ForgotPasswordScreen extends HookWidget {
               break;
             case LoadingState _:
               showDialog(
+                // set a context in build context
                 context: context,
+                // used to access and represent the location of the widget in the widget tree
                 barrierDismissible: false,
                 builder: (context) =>
                     // Set loadingKey to this Center widget
@@ -91,28 +104,36 @@ class ForgotPasswordScreen extends HookWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 Gap(32),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        InputFormWidget(
-                          title: 'Email',
-                          hint: 'Enter your email',
-                          controller: emailController,
-                        ),
+                Form(
+                  key: formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          InputFormWidget(
+                            title: 'Email',
+                            hint: 'Enter your email',
+                            controller: emailController,
+                          ),
 
-                        FilledButton(
-                          child: Text("Send reset link"),
-                          onPressed: () {
-                            context.read<ForgotPasswordBloc>().add(
-                              ForgotPasswordRequestEvent(
-                                email: emailController.text,
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                          FilledButton(
+                            child: Text("Send reset link"),
+                            onPressed: () {
+                              // Access formKey currentState to check if all fields pass validation
+                              // This triggers 'validator' in every InputFormWidget
+                              // It returns 'true' ONLY if no fields return red error text
+                              if (formKey.currentState!.validate()) {
+                                context.read<ForgotPasswordBloc>().add(
+                                  ForgotPasswordRequestEvent(
+                                    email: emailController.text,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

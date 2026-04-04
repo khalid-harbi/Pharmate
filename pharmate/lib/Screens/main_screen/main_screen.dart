@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class MainScreen extends StatelessWidget {
+  // navigationShell holds the current tab screen and branch index
   final StatefulNavigationShell navigationShell;
   const MainScreen({super.key, required this.navigationShell});
 
@@ -12,6 +13,7 @@ class MainScreen extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         // Highlights the active tab
+        // Branch index is used for highlighting and tab switching
         currentIndex: navigationShell.currentIndex,
 
         // Pass the index (branch) of the tapped item for switching

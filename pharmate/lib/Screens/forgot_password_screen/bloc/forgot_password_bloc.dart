@@ -12,7 +12,6 @@ class ForgotPasswordBloc
   final AuthService authService;
   ForgotPasswordBloc({required this.authService})
     : super(ForgotPasswordInitial()) {
-    on<ForgotPasswordEvent>((event, emit) {});
     on<ForgotPasswordRequestEvent>(forgotPasswordMethod);
   }
 
@@ -25,11 +24,18 @@ class ForgotPasswordBloc
     // This will be implemented always
     emit(LoadingState());
     // Call fp dart authService forgotPasswordMethod method
+
+    // .fold() takes two functions, (onLeftFunction, onRightFunction)
+    // The first function runs if the result is Left
+    // The second function runs if the result is Right
+    // wait until authService.signIn execution then check returned results
     (await authService.forgotPassword(email: event.email)).fold(
       // Check returned results from fp dart authService forgotPasswordMethod method
+      //# First function
       (onLeft) {
         emit(ErrorState(message: onLeft));
       },
+      //# Second function
       (onRight) {
         emit(SuccessState(message: onRight));
       },

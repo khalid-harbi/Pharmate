@@ -22,13 +22,13 @@ class AuthService {
       // the sign in state (success or fail)
       final String token = "signinlakdfsjgnlasdf09kjsd-3,kajsdhf94nsdpffuqeb";
 
-      // Mock loading with 2 seconds
+      // Mock loading with 1 second
       await Future.delayed(Duration(seconds: 1));
 
       // Check account email and password
       // is it stored in accounts[] ?
       for (var account in accounts) {
-        if (email == account['email'] && password == account['password']) {
+        if (account['email'] == email && account['password'] == password) {
           // Success! (Because it's a Right)
           // and here is the token string to prove it
           return Either.right(token);
@@ -52,11 +52,11 @@ class AuthService {
     required String password,
   }) async {
     try {
-      // Mock loading with 2 seconds
+      // Mock loading with 1 seconds
       await Future.delayed(Duration(seconds: 1));
 
       // Check if this account already exists by email
-      if (accounts.any((account) => email == account['email'])) {
+      if (accounts.any((account) => account['email'] == email)) {
         // Fail! (Because it's a Left)
         return Either.left("This account already exists. Please try again.");
       }
@@ -76,11 +76,11 @@ class AuthService {
 
   Future<Either<String, String>> forgotPassword({required String email}) async {
     try {
-      // Mock loading with 2 seconds
+      // Mock loading with 1 seconds
       await Future.delayed(Duration(seconds: 1));
 
       // Check if this account already exists by email
-      if (accounts.any((account) => email == account['email'])) {
+      if (accounts.any((account) => account['email'] == email)) {
         // Success! (Because it's a Right)
         return Either.right(
           'A password reset link has been sent to your email.',

@@ -11,7 +11,7 @@ void main() {
   // This runs GetIt setup
   Configuration.configureDependencies();
   runApp(
-    // Purpose: Provide or create the bloc
+    // Purpose: Provide or Create the bloc
     // More than one provider using Multi
     MultiBlocProvider(
       providers: [

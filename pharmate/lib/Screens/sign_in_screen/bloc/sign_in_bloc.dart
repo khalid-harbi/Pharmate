@@ -32,11 +32,17 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     (await authService.signIn(
       email: event.email,
       password: event.password,
+      // .fold() takes two functions, (onLeftFunction, onRightFunction)
+      // The first function runs if the result is Left
+      // The second function runs if the result is Right
+      // wait until authService.signIn execution then check returned results
     )).fold(
       // Check returned results from fp dart authService signIn method
+      //# First function
       (onLeft) {
         emit(ErrorState(message: onLeft));
       },
+      //# Second function
       (onRight) {
         emit(SuccessState());
       },

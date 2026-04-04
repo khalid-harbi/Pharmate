@@ -13,15 +13,16 @@ class SignInScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: remove 123 later
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
+
     // To handle loadingIndicator
+    // Creates a unique key that can identify a widget
     final loadingKey = GlobalKey();
 
     //! I had to search for this
     // useMemoized so the key doesn't get destroyed (changed) with every rebuild
-    // Remember and save the formKey
+    // Remember and save the unique formKey
     // If the screen rebuilds and the key changes, the new form starts completely fresh
     // The red error text will vanish, even if the user hasn't fixed the format yet
     final formKey = useMemoized(() => GlobalKey<FormState>());
@@ -29,10 +30,13 @@ class SignInScreen extends HookWidget {
     return Scaffold(
       appBar: AppBar(),
       // Purpose: React to state changes without rebuilding UI
+      // Trigger actions (side effects) without rebuilding UI
+      // Used here for pop loading, showDialog, navigation
+      // BlocListener can't return UI widgets
       body: BlocListener<SignInBloc, SignInState>(
         listener: (context, state) {
           // To handle (hide) loadingIndicator
-          if (loadingKey.currentContext != null &&
+          if (loadingKey.currentContext != null && // exists?
               // .mounted means triggered currently on the screen
               loadingKey.currentContext!.mounted) {
             // Remove from screen
@@ -46,6 +50,7 @@ class SignInScreen extends HookWidget {
             case LoadingState _:
               showDialog(
                 context: context,
+                // Controls whether the user can close the dialog by tapping outside of it
                 barrierDismissible: false,
                 builder: (context) =>
                     // Set loadingKey to this Center widget
@@ -118,6 +123,7 @@ class SignInScreen extends HookWidget {
                         FilledButton(
                           child: Text("Sign In"),
                           onPressed: () {
+                            // Access formKey currentState to check if all fields pass validation
                             // This triggers 'validator' in every InputFormWidget
                             // It returns 'true' ONLY if no fields return red error text
                             if (formKey.currentState!.validate()) {
