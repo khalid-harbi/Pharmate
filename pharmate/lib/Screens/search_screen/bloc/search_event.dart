@@ -4,6 +4,7 @@ part of 'search_bloc.dart';
 sealed class SearchEvent {}
 
 class SearchRequestEvent extends SearchEvent {
+  //~ #2
   final String searchText;
 
   SearchRequestEvent({required this.searchText});

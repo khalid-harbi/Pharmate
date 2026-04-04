@@ -11,13 +11,14 @@ part 'search_state.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final MedicinesManagementService medicineService;
 
-  List<MedicineModel> medicines = [];
   SearchBloc({required this.medicineService}) : super(SearchInitial()) {
-    on<SearchEvent>((event, emit) {});
+    //~ #3
     on<SearchRequestEvent>(searchMethod);
+
     on<DetailsRequestEvent>(detailsMethod);
   }
 
+  //~ #4
   FutureOr<void> searchMethod(
     // Take event from SearchRequestEvent
     SearchRequestEvent event,
@@ -27,12 +28,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     // This will be implemented always
     emit(MedicinesLoadingState());
     // Call fp dart MedicinesManagementService search method
+    //~ #5
     (await medicineService.search(searchText: event.searchText)).fold(
       // Check returned results from fp dart MedicinesManagementService search method
       (onLeft) {
         emit(MedicinesLoadingFailedState(message: onLeft));
       },
       (onRight) {
+        //~ #13
         emit(MedicinesFetchingSuccessfulState(medicines: onRight));
       },
     );

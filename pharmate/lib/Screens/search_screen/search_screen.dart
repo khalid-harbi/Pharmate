@@ -15,8 +15,11 @@ class SearchScreen extends HookWidget {
     final searchController = useTextEditingController();
     // Save the value to memory
     final formKey = useMemoized(() => GlobalKey<FormState>());
+
+    // We needed to save the loadingKey here
+    // to fix a loading indicator issue when we navigate back
     final loadingKey = useMemoized(() => GlobalKey());
-    final selectedBrandName = useState<String>('');
+    String selectedBrandName = '';
 
     return Scaffold(
       appBar: AppBar(
@@ -40,6 +43,7 @@ class SearchScreen extends HookWidget {
           switch (state) {
             case SearchInitial _:
               break;
+
             case MedicinesLoadingState _:
               showDialog(
                 context: context,
@@ -49,9 +53,11 @@ class SearchScreen extends HookWidget {
                     Center(key: loadingKey, child: CircularProgressIndicator()),
               );
               break;
+
             case MedicinesFetchingSuccessfulState _:
-              // Handled with build when later
+              // Handled with build when for multiple success states
               break;
+
             case MedicinesLoadingFailedState _:
               showDialog(
                 context: context,
@@ -82,7 +88,7 @@ class SearchScreen extends HookWidget {
                 // Pass more than one extra as a map
                 extra: {
                   'details': state.medicineDetails,
-                  'brandName': selectedBrandName.value,
+                  'brandName': selectedBrandName,
                 },
               );
               break;
@@ -130,7 +136,7 @@ class SearchScreen extends HookWidget {
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   context.read<SearchBloc>().add(
-                                    //! Send controller value #1
+                                    //~ #1
                                     SearchRequestEvent(
                                       searchText: searchController.text,
                                     ),
@@ -151,28 +157,18 @@ class SearchScreen extends HookWidget {
 
                   // ---------------------------
                   // ---------------------------
-                  // FilledButton(
-                  //   onPressed: () async {
-                  //     if (formKey.currentState!.validate()) {
-                  //       context.read<SearchBloc>().add(
-                  //         //! Send controller value #1
-                  //         SearchRequestEvent(searchText: searchController.text),
-                  //       );
-                  //     }
-                  //   },
-                  //   child: Text('Search', style: TextStyle(fontWeight: .bold)),
-                  // ),
-                  Gap(16),
                   Expanded(
                     child: BlocBuilder<SearchBloc, SearchState>(
                       //! I had to search for this
                       buildWhen: (previous, current) {
-                        // Redraw the list if it was successfully fetched
+                        // rebuild the widget when the state is MedicinesFetchingSuccessfulState
+                        // even if other success states are emitted.
                         return current is MedicinesFetchingSuccessfulState;
                       },
                       builder: (context, state) {
                         if (state is MedicinesFetchingSuccessfulState) {
                           return ListView.builder(
+                            //~ #15
                             itemCount: state.medicines.length,
                             itemBuilder: (context, index) {
                               return Padding(
@@ -181,8 +177,8 @@ class SearchScreen extends HookWidget {
                                   leading: Icon(Icons.medication),
                                   trailing: Icon(Icons.arrow_forward_ios),
 
-                                  onTap: () async {
-                                    selectedBrandName.value =
+                                  onTap: () {
+                                    selectedBrandName =
                                         state.medicines[index].brandName;
                                     context.read<SearchBloc>().add(
                                       DetailsRequestEvent(

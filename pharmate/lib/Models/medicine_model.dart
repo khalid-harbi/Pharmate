@@ -1,3 +1,5 @@
+//@ MedicineModel for the search results
+
 class MedicineModel {
   final String brandName;
 

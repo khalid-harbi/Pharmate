@@ -1,3 +1,5 @@
+//@ NewMedicineModel for the added medicines
+
 class NewMedicineModel {
   final String brandName;
   final String assignedTo;

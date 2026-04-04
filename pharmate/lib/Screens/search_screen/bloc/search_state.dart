@@ -5,6 +5,7 @@ sealed class SearchState {}
 
 final class SearchInitial extends SearchState {}
 
+//~ #14
 class MedicinesFetchingSuccessfulState extends SearchState {
   final List<MedicineModel> medicines;
 

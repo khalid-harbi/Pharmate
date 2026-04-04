@@ -22,15 +22,18 @@ class MedicinesManagementService {
   // ---------------------
   // ---------------------
   // ---------------------
-
+  //~ #6
   Future<Either<String, List<MedicineModel>>> search({
     required String searchText,
   }) async {
     try {
+      //~ #7
       final api = NetworkMethod(medicineName: searchText);
+      //~ #9
       medicines = await api.getAllSearchResults();
       if (medicines.isNotEmpty && medicines != []) {
         // Success! (Because it's a Right)
+        //~ #12
         return Either.right(medicines);
       }
 
@@ -51,7 +54,7 @@ class MedicinesManagementService {
     try {
       final api = NetworkMethod(medicineName: brandName);
 
-      // Create the Medicine Object
+      // Create the Medicine Details Object
       final MedicineDetailsModel? medicineDetails = await api
           .getMedicineDetails();
       if (medicineDetails != null) {

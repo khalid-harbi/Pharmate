@@ -29,7 +29,7 @@ class MedicineDetailsScreen extends StatelessWidget {
               Gap(32),
               Expanded(
                 child: ListView.builder(
-                  // +2 for Brand name and Add button
+                  // Extra + 2 fields for Brand name and Add button
                   itemCount: medicineDetails.availableDetails.length + 2,
                   itemBuilder: (context, index) {
                     if (index == 0) {
@@ -94,6 +94,9 @@ class MedicineDetailsScreen extends StatelessWidget {
                         ),
                       );
                     }
+
+                    // in normal cases, we use medicineDetails.availableDetails[index]
+                    // but since we have additional +1 button we subtract it
                     final item = medicineDetails.availableDetails[index - 1];
                     return Padding(
                       padding: const EdgeInsets.only(

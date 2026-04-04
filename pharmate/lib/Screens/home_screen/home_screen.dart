@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Medicines', style: TextStyle(fontWeight: .w600)),
+        title: Text('Medicines', style: TextStyle(fontWeight: .w600)),
       ),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {

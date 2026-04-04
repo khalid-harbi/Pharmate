@@ -12,7 +12,7 @@ class CabinetScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Cabinet', style: TextStyle(fontWeight: .w600)),
+        title: Text('Cabinet', style: TextStyle(fontWeight: .w600)),
       ),
       // Wrapped with home builder for addedMedicines List refreshing
       body: BlocBuilder<HomeBloc, HomeState>(
