@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="60" />
-  &nbsp;&nbsp;&nbsp;&nbsp;
+  
   <img src="https://github.com/user-attachments/assets/43384b67-8e0e-430b-b888-f19c70f0ad06" alt="Pharmate Logo" width="60" style="border-radius: 12px; object-fit: cover; height: 60px; object-position: top center;"/>
   
   <h1>💊 Pharmate</h1>
